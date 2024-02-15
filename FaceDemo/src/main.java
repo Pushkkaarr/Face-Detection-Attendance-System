@@ -8,5 +8,6 @@
  * @author Pushkar
  */
 public class main {
+    ssystem.out
     
 }
