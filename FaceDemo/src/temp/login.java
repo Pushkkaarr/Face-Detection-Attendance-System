@@ -87,6 +87,11 @@ public class login extends javax.swing.JFrame {
         jButton2.setFont(new java.awt.Font("Book Antiqua", 0, 24)); // NOI18N
         jButton2.setForeground(new java.awt.Color(0, 0, 153));
         jButton2.setText("Register");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -128,6 +133,12 @@ public class login extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.dispose();
+        register reg = new register();         
+       reg.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
    public static void main(String args[]) {
 
