@@ -44,6 +44,11 @@ public class login extends javax.swing.JFrame {
         jButton1.setBackground(new java.awt.Color(0, 102, 204));
         jButton1.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
         jButton1.setText("Scan Your Face");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -139,6 +144,12 @@ public class login extends javax.swing.JFrame {
         register reg = new register();         
        reg.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+           this.dispose(); // but first need to add face verfication here and then decide if go further or not.
+           homepage h1 = new homepage();
+           h1.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
    public static void main(String args[]) {
 
