@@ -1,11 +1,31 @@
 package temp;
-import java.io.*;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import javax.swing.*;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.videoio.VideoCapture;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.videoio.VideoCapture;
+import org.opencv.imgproc.Imgproc;
 public class register extends javax.swing.JFrame {
-
+    private VideoCapture camera;
+    private JPanel webcamPanel;
+    private JLabel imgLabel;
     public register() {
         initComponents();
+         System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // Load OpenCV library
         this.setExtendedState(MAXIMIZED_BOTH);
+         this.setTitle("Face Recognition");
+        
+        webcamPanel = new JPanel(new BorderLayout());
+        imgLabel = new JLabel();
+        webcamPanel.add(imgLabel, BorderLayout.CENTER);
+        
+        this.add(webcamPanel, BorderLayout.CENTER);
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -14,6 +34,7 @@ public class register extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -37,21 +58,30 @@ public class register extends javax.swing.JFrame {
         jLabel1.setText("Register Your Face ID");
         jLabel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 153), 3, true));
 
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon1/winking-face (1).png"))); // NOI18N
+        jLabel6.setText("jLabel6");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(55, Short.MAX_VALUE)
+                .addContainerGap(109, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(47, 47, 47))
+                .addGap(83, 83, 83))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(252, 252, 252)
+                .addGap(117, 117, 117)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(494, Short.MAX_VALUE))
+                .addContainerGap(445, Short.MAX_VALUE))
         );
 
         jLabel2.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
@@ -84,6 +114,11 @@ public class register extends javax.swing.JFrame {
         jButton2.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
         jButton2.setForeground(new java.awt.Color(153, 0, 153));
         jButton2.setText("Open WebCam");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel5.setBackground(new java.awt.Color(102, 102, 0));
         jLabel5.setFont(new java.awt.Font("Book Antiqua", 0, 24)); // NOI18N
@@ -109,7 +144,7 @@ public class register extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
+                        .addGap(133, 133, 133)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -124,16 +159,16 @@ public class register extends javax.swing.JFrame {
                                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
                                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addGap(0, 548, Short.MAX_VALUE))
+                        .addGap(0, 375, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(131, 131, 131))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(54, 54, 54))))))
+                                .addGap(54, 54, 54))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(29, 29, 29))))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,9 +184,9 @@ public class register extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45)
+                .addGap(47, 47, 47)
                 .addComponent(jLabel5)
-                .addGap(10, 10, 10)
+                .addGap(8, 8, 8)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jButton1))
@@ -186,6 +221,59 @@ public class register extends javax.swing.JFrame {
        l1.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+               if (camera == null) {
+                    camera = new VideoCapture(0); // Open default camera (index 0)
+
+                    if (!camera.isOpened()) {
+                        System.out.println("Error: Camera not opened. Check if the camera is connected and accessible.");
+                        return;
+                    }
+
+                    JButton captureButton = new JButton("Capture Image");
+                    captureButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            Mat frame = new Mat();
+                            if (camera.read(frame)) {
+                                Imgcodecs.imwrite("captured_image.jpg", frame);
+                                JOptionPane.showMessageDialog(null, "Image captured successfully!");
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Error: Unable to capture image from webcam.");
+                            }
+                        }
+                    });
+                    webcamPanel.add(captureButton, BorderLayout.SOUTH);
+
+                    Timer timer = new Timer(33, new ActionListener() { // Update frame every 33 milliseconds (30 fps)
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            Mat frame = new Mat();
+                            if (camera.read(frame)) {
+                                Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGR2RGB); // Convert color space for displaying in Swing
+                                ImageIcon image = new ImageIcon(Mat2BufferedImage(frame));
+                                imgLabel.setIcon(image);
+                                imgLabel.repaint();
+                            }
+                        }
+                    });
+                    timer.start();
+     
+    }//GEN-LAST:event_jButton2ActionPerformed
+} private BufferedImage Mat2BufferedImage(Mat mat) {
+        int type = BufferedImage.TYPE_BYTE_GRAY;
+        if (mat.channels() > 1) {
+            type = BufferedImage.TYPE_3BYTE_BGR;
+        }
+        int bufferSize = mat.channels() * mat.cols() * mat.rows();
+        byte[] b = new byte[bufferSize];
+        mat.get(0, 0, b);
+        BufferedImage image = new BufferedImage(mat.cols(), mat.rows(), type);
+        final byte[] targetPixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+        System.arraycopy(b, 0, targetPixels, 0, b.length);
+        return image;
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -209,8 +297,7 @@ public class register extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(register.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
-        /* Create and display the form */
+     
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new register().setVisible(true);
@@ -228,8 +315,10 @@ public class register extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
+   
 }
