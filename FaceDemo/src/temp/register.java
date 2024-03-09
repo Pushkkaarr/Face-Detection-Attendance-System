@@ -1,31 +1,18 @@
 package temp;
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import javax.swing.*;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.videoio.VideoCapture;
-import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.videoio.VideoCapture;
-import org.opencv.imgproc.Imgproc;
 public class register extends javax.swing.JFrame {
-    private VideoCapture camera;
-    private JPanel webcamPanel;
-    private JLabel imgLabel;
+
     public register() {
         initComponents();
          System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // Load OpenCV library
         this.setExtendedState(MAXIMIZED_BOTH);
          this.setTitle("Face Recognition");
         
-        webcamPanel = new JPanel(new BorderLayout());
-        imgLabel = new JLabel();
-        webcamPanel.add(imgLabel, BorderLayout.CENTER);
-        
-        this.add(webcamPanel, BorderLayout.CENTER);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -211,7 +198,9 @@ public class register extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         JFileChooser choose = new JFileChooser();
-        choose.showOpenDialog(null);
+         if (choose.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                    JOptionPane.showMessageDialog(null, "Image selected successfully!");
+                }
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -222,57 +211,12 @@ public class register extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-               if (camera == null) {
-                    camera = new VideoCapture(0); // Open default camera (index 0)
-
-                    if (!camera.isOpened()) {
-                        System.out.println("Error: Camera not opened. Check if the camera is connected and accessible.");
-                        return;
-                    }
-
-                    JButton captureButton = new JButton("Capture Image");
-                    captureButton.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            Mat frame = new Mat();
-                            if (camera.read(frame)) {
-                                Imgcodecs.imwrite("captured_image.jpg", frame);
-                                JOptionPane.showMessageDialog(null, "Image captured successfully!");
-                            } else {
-                                JOptionPane.showMessageDialog(null, "Error: Unable to capture image from webcam.");
-                            }
-                        }
-                    });
-                    webcamPanel.add(captureButton, BorderLayout.SOUTH);
-
-                    Timer timer = new Timer(33, new ActionListener() { // Update frame every 33 milliseconds (30 fps)
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            Mat frame = new Mat();
-                            if (camera.read(frame)) {
-                                Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGR2RGB); // Convert color space for displaying in Swing
-                                ImageIcon image = new ImageIcon(Mat2BufferedImage(frame));
-                                imgLabel.setIcon(image);
-                                imgLabel.repaint();
-                            }
-                        }
-                    });
-                    timer.start();
-     
+       webcam_capture cam = new webcam_capture();
+       cam.setVisible(true);
+       cam.toFront();
+        
     }//GEN-LAST:event_jButton2ActionPerformed
-} private BufferedImage Mat2BufferedImage(Mat mat) {
-        int type = BufferedImage.TYPE_BYTE_GRAY;
-        if (mat.channels() > 1) {
-            type = BufferedImage.TYPE_3BYTE_BGR;
-        }
-        int bufferSize = mat.channels() * mat.cols() * mat.rows();
-        byte[] b = new byte[bufferSize];
-        mat.get(0, 0, b);
-        BufferedImage image = new BufferedImage(mat.cols(), mat.rows(), type);
-        final byte[] targetPixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
-        System.arraycopy(b, 0, targetPixels, 0, b.length);
-        return image;
-    }
+
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -297,7 +241,7 @@ public class register extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(register.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-     
+     System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new register().setVisible(true);
