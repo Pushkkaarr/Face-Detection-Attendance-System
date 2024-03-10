@@ -146,7 +146,10 @@ public class login extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-           this.dispose(); // but first need to add face verfication here and then decide if go further or not.
+           webcam_capture cam1 = new webcam_capture();
+           cam1.setVisible(true);
+           cam1.toFront();
+          this.dispose(); // but first need to add face verfication here and then decide if go further or not.
            homepage h1 = new homepage();
            h1.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed

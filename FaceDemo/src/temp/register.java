@@ -1,9 +1,6 @@
 package temp;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
 import javax.swing.*;
 import org.opencv.core.Core;
-import org.opencv.core.Mat;
 public class register extends javax.swing.JFrame {
 
     public register() {
@@ -14,7 +11,7 @@ public class register extends javax.swing.JFrame {
         
 
     }
-
+    
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 

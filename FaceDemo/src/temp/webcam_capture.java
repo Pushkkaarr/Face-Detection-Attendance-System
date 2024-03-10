@@ -1,6 +1,6 @@
 package temp;
-
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.border.MatteBorder;
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
@@ -43,7 +44,7 @@ public class webcam_capture extends javax.swing.JFrame {
         jLabel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 51, 51), 3, true));
 
         jButton1.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
-        jButton1.setText("Capture Image");
+        jButton1.setText("Start Webcam");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -119,6 +120,10 @@ public class webcam_capture extends javax.swing.JFrame {
                 webcamPanel.setLayout(new BorderLayout());
                 webcamPanel.add(imgLabel, BorderLayout.CENTER);
                 getContentPane().add(webcamPanel, BorderLayout.CENTER);
+                webcamPanel.setBounds(200,100,300,300);
+//                webcamPanel.setPreferredSize(new Dimension(200, 200));
+//                webcamPanel.setSize(300, 300);
+//             
                 setVisible(true);           
         if (camera == null) {
                     camera = new VideoCapture(0); // Open default camera (index 0)
@@ -151,6 +156,7 @@ public class webcam_capture extends javax.swing.JFrame {
                             Mat frame = new Mat(); // Declare Mat frame as a class-level variable
                             if (camera.read(frame)) {
                                 Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGR2RGB); // Convert color space for displaying in Swing
+                                  Core.flip(frame, frame, 1); // Flip along the x-axis only
                                 bufferedImage = Mat2BufferedImage(frame);
                                 imgLabel.setIcon(new ImageIcon(bufferedImage));
                                 imgLabel.repaint();
@@ -198,7 +204,7 @@ public class webcam_capture extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-      
+      System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new webcam_capture().setVisible(true);
