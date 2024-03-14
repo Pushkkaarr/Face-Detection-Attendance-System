@@ -120,16 +120,13 @@ public class webcam_capture extends javax.swing.JFrame {
                 webcamPanel.setLayout(new BorderLayout());
                 webcamPanel.add(imgLabel, BorderLayout.CENTER);
                 getContentPane().add(webcamPanel, BorderLayout.CENTER);
-                webcamPanel.setBounds(200,100,300,300);
-//                webcamPanel.setPreferredSize(new Dimension(200, 200));
-//                webcamPanel.setSize(300, 300);
-//             
+                webcamPanel.setBounds(200,100,300,300);           
                 setVisible(true);           
         if (camera == null) {
                     camera = new VideoCapture(0); // Open default camera (index 0)
 
                     if (!camera.isOpened()) {
-                        System.out.println("Error: Camera not opened. Check if the camera is connected and accessible.");
+                        JOptionPane.showMessageDialog(null,"Error: Camera not opened. Check if the camera is connected and accessible.");
                         return;
                     }
 
