@@ -37,6 +37,11 @@ public class homepage extends javax.swing.JFrame {
         jButton2.setFont(new java.awt.Font("Book Antiqua", 1, 24)); // NOI18N
         jButton2.setForeground(new java.awt.Color(204, 0, 204));
         jButton2.setText("Take Attendance");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton4.setFont(new java.awt.Font("Book Antiqua", 1, 18)); // NOI18N
         jButton4.setText("Back");
@@ -162,6 +167,12 @@ public class homepage extends javax.swing.JFrame {
         login l2 = new login();
         l2.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.dispose();
+        Attendance a1 = new Attendance();
+        a1.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
