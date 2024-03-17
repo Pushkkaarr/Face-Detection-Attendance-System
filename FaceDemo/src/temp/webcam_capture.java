@@ -151,12 +151,14 @@ public class webcam_capture extends javax.swing.JFrame {
                                 bufferedImage = Mat2BufferedImage(frame);
                                 imgLabel.setIcon(new ImageIcon(bufferedImage));
                                 imgLabel.repaint();
+                                
                             }
                         }
                     });
                     timer.start();
      
-    }                             
+    }   
+      
     }//GEN-LAST:event_jButton1ActionPerformed
     public BufferedImage getCapturedImage() {
         return bufferedImage;

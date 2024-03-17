@@ -1,6 +1,7 @@
 package temp;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import javax.swing.*;
 import java.sql.*;
@@ -289,8 +290,26 @@ public class register extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         JFileChooser choose = new JFileChooser();
          if (choose.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                    JOptionPane.showMessageDialog(null, "Image selected successfully!");
-                }
+        File selectedFile = choose.getSelectedFile();
+        
+        try {
+            capturedImage = ImageIO.read(selectedFile);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            
+            if (capturedImage != null) {
+                ImageIO.write(capturedImage, "jpg", baos);
+                imageData = baos.toByteArray();
+                
+                JOptionPane.showMessageDialog(null, "Image selected and assigned successfully!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Error: Selected image cannot be read.");
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error while reading the selected image.");
+        }
+    }
+
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -305,13 +324,21 @@ public class register extends javax.swing.JFrame {
         cam.setVisible(true);
         cam.toFront();
         capturedImage = cam.getCapturedImage();
+       
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    try {
-        ImageIO.write(capturedImage, "jpg", baos);
+      try {
+        if (capturedImage != null) {
+            ImageIO.write(capturedImage, "jpg", baos);
+             imageData = baos.toByteArray();
+            
+            // Store the byte[] imageData in a class-level variable or pass it to another method for database storage
+        } else {
+            JOptionPane.showMessageDialog(null, "Error: Captured image is null. Please capture an image from the webcam.");
+        }
     } catch (IOException ex) {
         ex.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Error while converting image to byte array.");
     }
-       imageData = baos.toByteArray();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
