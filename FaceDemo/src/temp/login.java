@@ -1,13 +1,10 @@
 package temp;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
 import javax.swing.JOptionPane;
 import org.opencv.core.Mat;
 import java.sql.*;
-import org.opencv.core.CvType;
-import org.opencv.core.MatOfByte;
-import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.core.Core;
 
 public class login extends javax.swing.JFrame implements webcam_capture.ImageCaptureCallback{
     BufferedImage capturedImage;
@@ -156,13 +153,14 @@ public class login extends javax.swing.JFrame implements webcam_capture.ImageCap
     
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-           webcam_capture cam1 = new webcam_capture();
+           
+        webcam_capture cam1 = new webcam_capture();
            cam1.setVisible(true);
            cam1.toFront();
             capturedImage = cam1.getCapturedImage();
            String Id1= jTextField1.getText();
            {
-               if(Id1.isEmpty() || !Id1.contains("[a-zA-Z+")){
+               if(!Id1.contains("[0-9]+")){
                    JOptionPane.showMessageDialog(null, "Please enter proper ID ");
                      return;
                }
@@ -222,7 +220,7 @@ public class login extends javax.swing.JFrame implements webcam_capture.ImageCap
     }//GEN-LAST:event_jButton1ActionPerformed
 
    public static void main(String args[]) {
-
+         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new login().setVisible(true);

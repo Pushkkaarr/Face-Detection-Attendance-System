@@ -1,4 +1,5 @@
 package temp;
+
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,10 +25,22 @@ public class webcam_capture extends javax.swing.JFrame {
     VideoCapture camera;
     BufferedImage bufferedImage;
     JLabel imgLabel;
-    
-    public webcam_capture() {
-        initComponents();
+     public static Mat BufferedImage2Mat(BufferedImage image) {
+        Mat mat = new Mat(image.getHeight(), image.getWidth(), CvType.CV_8UC3);
+        byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+        mat.put(0, 0, data);
+        return mat;
     }
+
+    public static Mat ByteToMat(byte[] data) {
+    MatOfByte matOfByte = new MatOfByte(data);
+    return Imgcodecs.imdecode(matOfByte, 1);
+}
+
+  public webcam_capture() {
+         initComponents();
+    }
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -118,6 +131,7 @@ public class webcam_capture extends javax.swing.JFrame {
     public void setImageCaptureCallback(ImageCaptureCallback callback) {
         this.callback = callback;
     }
+  
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         JPanel webcamPanel = new JPanel();
                 webcamPanel.setBackground(new java.awt.Color(255, 255, 255));
@@ -130,20 +144,19 @@ public class webcam_capture extends javax.swing.JFrame {
                 getContentPane().add(webcamPanel, BorderLayout.CENTER);
                 webcamPanel.setBounds(200,100,300,300);           
                 setVisible(true);           
-        if (camera == null) {
-                    camera = new VideoCapture(0); // Open default camera (index 0)
-
-                    if (!camera.isOpened()) {
+             if (camera == null) {
+                    camera = new VideoCapture(0); // Open default camera (index 0)    
+                    
+                    JButton captureButton = new JButton("Capture Image");
+                    captureButton.addActionListener(new ActionListener() {                       
+                        public void actionPerformed(ActionEvent e) {
+                            Mat frame = new Mat();
+                          
+                            if (camera.read(frame)) {
+                                   if(!camera.isOpened()){
                         JOptionPane.showMessageDialog(null,"Error: Camera not opened. Check if the camera is connected and accessible.");
                         return;
                     }
-
-                    JButton captureButton = new JButton("Capture Image");
-                    captureButton.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            Mat frame = new Mat();
-                            if (camera.read(frame)) {
                                 Imgcodecs.imwrite("captured_image.jpg", frame);
                                 JOptionPane.showMessageDialog(null, "Image captured successfully!");
                             BufferedImage capturedImg = Mat2BufferedImage(frame); // Convert captured Mat to BufferedImage
@@ -156,7 +169,7 @@ public class webcam_capture extends javax.swing.JFrame {
             }
         });
                     webcamPanel.add(captureButton, BorderLayout.SOUTH);
-
+            
                     
                     Timer timer = new Timer(33, new ActionListener() { // Update frame every 33 milliseconds (30 fps)
                         @Override
@@ -169,32 +182,19 @@ public class webcam_capture extends javax.swing.JFrame {
                                 bufferedImage = Mat2BufferedImage(frame);
                                 imgLabel.setIcon(new ImageIcon(bufferedImage));
                                 imgLabel.repaint();
-                                
+                             
+                               
                             }
                         }
                     });
                     timer.start();
      
     }   
-//     BufferedImage capturedImg = getCapturedImage();
-//        if (callback != null) {
-//            callback.onImageCaptured(capturedImg);
-//        } 
     }//GEN-LAST:event_jButton1ActionPerformed
     public BufferedImage getCapturedImage() {
         return bufferedImage;
     }
-    public static Mat BufferedImage2Mat(BufferedImage image) {
-        Mat mat = new Mat(image.getHeight(), image.getWidth(), CvType.CV_8UC3);
-        byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
-        mat.put(0, 0, data);
-        return mat;
-    }
-
-    public static Mat ByteToMat(byte[] data) {
-    MatOfByte matOfByte = new MatOfByte(data);
-    return Imgcodecs.imdecode(matOfByte, 1);
-}
+   
     public static double compareFaces(Mat image1, Mat image2) {
     Mat grayImage1 = new Mat();
     Mat grayImage2 = new Mat();

@@ -55,18 +55,13 @@
                   </Group>
                   <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="jComboBox1" min="-2" pref="105" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jDateChooser1" pref="173" max="32767" attributes="0"/>
-                              <Component id="jTextField1" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="51" pref="501" max="32767" attributes="0"/>
+                      <Component id="jComboBox1" alignment="0" min="-2" pref="105" max="-2" attributes="0"/>
+                      <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="jDateChooser1" pref="173" max="32767" attributes="0"/>
+                          <Component id="jTextField1" max="32767" attributes="0"/>
                       </Group>
                   </Group>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="103" max="-2" attributes="0"/>
