@@ -345,7 +345,7 @@ public class register extends javax.swing.JFrame {
         if(evt.getSource()==jButton4){
     String name = jTextField1.getText();
     String department = (String) jComboBox1.getSelectedItem();
-    String age = (String) jSpinner1.getValue();
+    String age = String.valueOf(jSpinner1.getValue());
     String mobileNumber = jTextField2.getText();
     String email = jTextField3.getText();
     String gender = (String) jComboBox2.getSelectedItem();

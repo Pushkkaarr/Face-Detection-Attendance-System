@@ -12,7 +12,10 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.border.MatteBorder;
 import org.opencv.core.Core;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
+import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
@@ -21,6 +24,7 @@ public class webcam_capture extends javax.swing.JFrame {
     VideoCapture camera;
     BufferedImage bufferedImage;
     JLabel imgLabel;
+    
     public webcam_capture() {
         initComponents();
     }
@@ -103,7 +107,17 @@ public class webcam_capture extends javax.swing.JFrame {
          this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    
+      public interface ImageCaptureCallback {
+        void onImageCaptured(BufferedImage image);
+    }
+
+    // Instance of the callback interface
+    private ImageCaptureCallback callback;
+
+    // Method to set the callback
+    public void setImageCaptureCallback(ImageCaptureCallback callback) {
+        this.callback = callback;
+    }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         JPanel webcamPanel = new JPanel();
                 webcamPanel.setBackground(new java.awt.Color(255, 255, 255));
@@ -132,11 +146,15 @@ public class webcam_capture extends javax.swing.JFrame {
                             if (camera.read(frame)) {
                                 Imgcodecs.imwrite("captured_image.jpg", frame);
                                 JOptionPane.showMessageDialog(null, "Image captured successfully!");
-                            } else {
-                                JOptionPane.showMessageDialog(null, "Error: Unable to capture image from webcam.");
-                            }
-                        }
-                    });
+                            BufferedImage capturedImg = Mat2BufferedImage(frame); // Convert captured Mat to BufferedImage
+                    if (callback != null) {
+                        callback.onImageCaptured(capturedImg); // Notify the callback with the captured image
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error: Unable to capture image from webcam.");
+                }
+            }
+        });
                     webcamPanel.add(captureButton, BorderLayout.SOUTH);
 
                     
@@ -158,11 +176,52 @@ public class webcam_capture extends javax.swing.JFrame {
                     timer.start();
      
     }   
-      
+//     BufferedImage capturedImg = getCapturedImage();
+//        if (callback != null) {
+//            callback.onImageCaptured(capturedImg);
+//        } 
     }//GEN-LAST:event_jButton1ActionPerformed
     public BufferedImage getCapturedImage() {
         return bufferedImage;
     }
+    public static Mat BufferedImage2Mat(BufferedImage image) {
+        Mat mat = new Mat(image.getHeight(), image.getWidth(), CvType.CV_8UC3);
+        byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+        mat.put(0, 0, data);
+        return mat;
+    }
+
+    public static Mat ByteToMat(byte[] data) {
+    MatOfByte matOfByte = new MatOfByte(data);
+    return Imgcodecs.imdecode(matOfByte, 1);
+}
+    public static double compareFaces(Mat image1, Mat image2) {
+    Mat grayImage1 = new Mat();
+    Mat grayImage2 = new Mat();
+
+    // Convert images to grayscale
+    Imgproc.cvtColor(image1, grayImage1, Imgproc.COLOR_BGR2GRAY);
+    Imgproc.cvtColor(image2, grayImage2, Imgproc.COLOR_BGR2GRAY);
+
+    // Resize both images to a fixed size to ensure compatibility for comparison
+    Size size = new Size(128, 128);
+    Imgproc.resize(grayImage1, grayImage1, size);
+    Imgproc.resize(grayImage2, grayImage2, size);
+
+    // Calculate the sum of absolute differences for each pixel
+    double sumDiff = 0;
+    for (int i = 0; i < grayImage1.rows(); i++) {
+        for (int j = 0; j < grayImage1.cols(); j++) {
+            sumDiff += Math.abs(grayImage1.get(i, j)[0] - grayImage2.get(i, j)[0]);
+        }
+    }
+
+    // Normalize the difference to get similarity
+    double maxDifference = 255 * grayImage1.rows() * grayImage1.cols(); // Max difference between pixel values
+    double similarity = 1 - (sumDiff / maxDifference);
+
+    return similarity;
+}
     public BufferedImage Mat2BufferedImage(Mat mat) {
         int type = BufferedImage.TYPE_BYTE_GRAY;
         if (mat.channels() > 1) {
