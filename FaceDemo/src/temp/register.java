@@ -251,7 +251,7 @@ public class register extends javax.swing.JFrame {
                 .addGap(4, 4, 4)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(61, 61, 61)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
@@ -345,16 +345,34 @@ public class register extends javax.swing.JFrame {
         if(evt.getSource()==jButton4){
     String name = jTextField1.getText();
     String department = (String) jComboBox1.getSelectedItem();
-    int age = (int) jSpinner1.getValue();
+    String age = (String) jSpinner1.getValue();
     String mobileNumber = jTextField2.getText();
     String email = jTextField3.getText();
     String gender = (String) jComboBox2.getSelectedItem();
     String Id = (String)jTextField4.getText();
     byte[] image = imageData; // This will store the image data from the OpenCV webcam
 
-    // Collect the image data from the OpenCV webcam and store it in imageData
-    // You need to implement the code to capture the image and convert it to byte[]
-
+  // Handling any wrong input in all fields and proper syntax for every field.
+     if(gender.isEmpty() || Id.isEmpty() ||name.isEmpty() || department.isEmpty() || age.isEmpty() || mobileNumber.isEmpty() || email.isEmpty()){
+    JOptionPane.showMessageDialog(null, "Please fill in all fields.");
+    return; // to stop user from procedding forward AND TAKE ONLY CHARACTERS
+}   
+   else if(!name.matches("[a-zA-Z]+")) {
+    JOptionPane.showMessageDialog(null, "Please enter only Characters in Name-Field ");
+    return; // to stop user from proceeding forward
+}
+   else if (!Id.matches("[0-9]+") || Id.length() != 5) {
+    JOptionPane.showMessageDialog(null, "Please enter only integers in Teacher ID and enter exactly 5 integers.");
+    return; // to stop user from proceeding forward
+}
+   else if (!mobileNumber.matches("[0-9]+") || mobileNumber.length() != 10) {
+    JOptionPane.showMessageDialog(null, "Please enter only integers in Mobile No. and enter exactly 10 Digit Number");
+    return; // to stop user from proceeding forward
+}
+   else if (!email.contains("@")) {
+    JOptionPane.showMessageDialog(null, "Please enter Proper Email ID");
+    return; // to stop user from proceeding forward
+}
     try {
               Statement statement = Cont.getStatement();
                  String query = "INSERT INTO teacherdetails (TeacherID, FullName, Department, Age, MobileNumber, Email, Gender,FaceImage) "
