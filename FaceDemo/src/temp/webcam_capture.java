@@ -1,6 +1,5 @@
 package temp;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -20,7 +19,7 @@ import org.opencv.videoio.VideoCapture;
 
 public class webcam_capture extends javax.swing.JFrame {
     VideoCapture camera;
-    
+    BufferedImage bufferedImage;
     JLabel imgLabel;
     public webcam_capture() {
         initComponents();
@@ -104,11 +103,12 @@ public class webcam_capture extends javax.swing.JFrame {
          this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         JPanel webcamPanel = new JPanel();
-                   webcamPanel.setBackground(new java.awt.Color(255, 255, 255));
-                   webcamPanel.setBorder(new MatteBorder(1, 1, 1, 1, new java.awt.Color(0, 0, 0))); 
-              webcamPanel.setVisible(true);
+                webcamPanel.setBackground(new java.awt.Color(255, 255, 255));
+                webcamPanel.setBorder(new MatteBorder(1, 1, 1, 1, new java.awt.Color(0, 0, 0))); 
+                webcamPanel.setVisible(true);
                  imgLabel = new JLabel();
                 webcamPanel.add(imgLabel);
                 webcamPanel.setLayout(new BorderLayout());
@@ -143,7 +143,7 @@ public class webcam_capture extends javax.swing.JFrame {
                     Timer timer = new Timer(33, new ActionListener() { // Update frame every 33 milliseconds (30 fps)
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            BufferedImage bufferedImage = null;
+                             bufferedImage = null;
                             Mat frame = new Mat(); // Declare Mat frame as a class-level variable
                             if (camera.read(frame)) {
                                 Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGR2RGB); // Convert color space for displaying in Swing
@@ -158,7 +158,10 @@ public class webcam_capture extends javax.swing.JFrame {
      
     }                             
     }//GEN-LAST:event_jButton1ActionPerformed
-  private BufferedImage Mat2BufferedImage(Mat mat) {
+    public BufferedImage getCapturedImage() {
+        return bufferedImage;
+    }
+    public BufferedImage Mat2BufferedImage(Mat mat) {
         int type = BufferedImage.TYPE_BYTE_GRAY;
         if (mat.channels() > 1) {
             type = BufferedImage.TYPE_3BYTE_BGR;

@@ -12,7 +12,11 @@ public class Cont {
     }
 
     public static Statement getStatement() throws SQLException {
-        statement = connection.createStatement();
+        try {
+            statement = connection.createStatement();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return statement;
     }
 
@@ -25,7 +29,7 @@ public class Cont {
     static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/sign_up", "root", "MePushkar@sql#193?PW");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/face", "root", "MePushkar@sql#193?PW");
         } catch (Exception e) {
             e.printStackTrace();
         }

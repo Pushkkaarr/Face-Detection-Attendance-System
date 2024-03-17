@@ -1,10 +1,15 @@
 package temp;
 
-public class homepage extends javax.swing.JFrame {
+import java.io.File;
+import javax.swing.ImageIcon;
 
+public class homepage extends javax.swing.JFrame {
+  ImageIcon image;
     public homepage() {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
+        File imageFile = new File(getClass().getResource("/icon1/robot-face-1.png").getPath());
+        image = new ImageIcon(imageFile.getAbsolutePath());
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
