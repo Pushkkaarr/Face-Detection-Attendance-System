@@ -1,20 +1,15 @@
 package temp;
 
 import java.awt.image.BufferedImage;
-import javax.swing.JOptionPane;
-import org.opencv.core.Mat;
-import java.sql.*;
 import org.opencv.core.Core;
 
-public class login extends javax.swing.JFrame implements webcam_capture.ImageCaptureCallback{
-    BufferedImage capturedImage;
+public class login extends javax.swing.JFrame {
     public login() {
+        this.str = jTextField1.getText();
         initComponents();
        this.setExtendedState(MAXIMIZED_BOTH);
     }
-   public void onImageCaptured(BufferedImage image) {
-        this.capturedImage = image;
-    }
+   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -150,73 +145,12 @@ public class login extends javax.swing.JFrame implements webcam_capture.ImageCap
         register reg = new register();         
        reg.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
-    
+    String str;
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-           
-        webcam_capture cam1 = new webcam_capture();
-           cam1.setVisible(true);
-           cam1.toFront();
-            capturedImage = cam1.getCapturedImage();
-           String Id1= jTextField1.getText();
-           {
-               if(!Id1.contains("[0-9]+")){
-                   JOptionPane.showMessageDialog(null, "Please enter proper ID ");
-                     return;
-               }
-               // Fetch the image of the teacher from the database based on the teacher ID
-    byte[] imageBytes = null;
-    try {
-        // Establish a connection to the database using the Cont class
-        Connection conn = Cont.getConnection();
-        
-        // Prepare a SQL query to fetch the image data based on the teacher ID
-        String query = "SELECT FaceImage FROM teachers WHERE teacher_id = '" + Id1+ "'";
-        PreparedStatement pstmt = conn.prepareStatement(query);
-        pstmt.setString(1, Id1);
-        
-        // Execute the query
-        ResultSet rs = pstmt.executeQuery();
-        
-        // Check if the result set contains data
-        if (rs.next()) {
-            // Get the image data as a byte array
-            imageBytes = rs.getBytes("FaceImage");
-        } else {
-            JOptionPane.showMessageDialog(null, "Image not found in the database for the provided teacher ID.");
-            return;
-        }
-        
-        // Convert the captured image BufferedImage to Mat
-        Mat capturedImageMat = webcam_capture.BufferedImage2Mat(capturedImage);
-
-        // Convert the retrieved image from the database to Mat
-        Mat dbImageMat = webcam_capture.ByteToMat(imageBytes);
-        
-        // Compare the faces using OpenCV
-        double similarity = webcam_capture.compareFaces(capturedImageMat, dbImageMat);
-
-        // Define a threshold for similarity
-        double threshold = 0.7; // Adjust this threshold as needed
-
-        if (similarity >= threshold) {
-            // Faces match
-            JOptionPane.showMessageDialog(null, "Face matched!");
-            this.dispose(); // Close the login window
-            homepage h1 = new homepage();
-            h1.setVisible(true);
-        } else {
-            // Faces do not match
-            JOptionPane.showMessageDialog(null, "Face not matched. Please try again.");
-        }
-        
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-           }
-          this.dispose(); // but first need to add face verfication here and then decide if go further or not.
-           homepage h1 = new homepage();
-           h1.setVisible(true);
+           scan_face s = new scan_face(str);
+           s.setVisible(true);
+       
     }//GEN-LAST:event_jButton1ActionPerformed
 
    public static void main(String args[]) {

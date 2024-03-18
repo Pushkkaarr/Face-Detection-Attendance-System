@@ -1,3 +1,4 @@
+
 package temp;
 
 import java.awt.BorderLayout;
@@ -5,6 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -13,65 +17,48 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.border.MatteBorder;
 import org.opencv.core.Core;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfByte;
-import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 
-public class webcam_capture extends javax.swing.JFrame {
-    VideoCapture camera;
+public class scan_face extends javax.swing.JFrame implements webcam_capture.ImageCaptureCallback {
+     BufferedImage capturedImage;
+     VideoCapture camera;
     BufferedImage bufferedImage;
     JLabel imgLabel;
-     public static Mat BufferedImage2Mat(BufferedImage image) {
-        Mat mat = new Mat(image.getHeight(), image.getWidth(), CvType.CV_8UC3);
-        byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
-        mat.put(0, 0, data);
-        return mat;
+    public void onImageCaptured(BufferedImage image) {
+        this.capturedImage = image;
     }
-
-    public static Mat ByteToMat(byte[] data) {
-    MatOfByte matOfByte = new MatOfByte(data);
-    return Imgcodecs.imdecode(matOfByte, 1);
-}
-
-  public webcam_capture() {
-         initComponents();
+    public scan_face() {
+        initComponents();
     }
-
+    String Id1;
+   public scan_face(String str){
+       Id1=str;
+   }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(0, 153, 153));
+        jPanel1.setBackground(new java.awt.Color(204, 0, 204));
+        jPanel1.setForeground(new java.awt.Color(0, 153, 153));
 
-        jLabel1.setFont(new java.awt.Font("Book Antiqua", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 204));
+        jLabel1.setFont(new java.awt.Font("Book Antiqua", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 51, 51));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Taking Image From WebCam");
-        jLabel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 51, 51), 3, true));
+        jLabel1.setText("Scan Your Face");
+        jLabel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 153), 4, true));
 
-        jButton1.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
-        jButton1.setText("Start Webcam");
+        jButton1.setText("Start Camera");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
-            }
-        });
-
-        jButton2.setFont(new java.awt.Font("Book Antiqua", 1, 12)); // NOI18N
-        jButton2.setText("Close");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
             }
         });
 
@@ -80,61 +67,47 @@ public class webcam_capture extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(264, 264, 264)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(199, 199, 199)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addGap(24, 24, 24))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(156, 156, 156)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(251, 251, 251)
+                        .addComponent(jButton1)))
+                .addContainerGap(218, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 384, Short.MAX_VALUE)
+                .addGap(24, 24, 24)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 294, Short.MAX_VALUE)
                 .addComponent(jButton1)
-                .addGap(42, 42, 42))
+                .addGap(84, 84, 84))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        setBounds(350, 130, 703, 508);
+        pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-         this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
-    
-    
-      public interface ImageCaptureCallback {
-        void onImageCaptured(BufferedImage image);
-    }
-
-    // Instance of the callback interface
-    private ImageCaptureCallback callback;
+     private webcam_capture.ImageCaptureCallback callback;
 
     // Method to set the callback
-    public void setImageCaptureCallback(ImageCaptureCallback callback) {
+    public void setImageCaptureCallback(webcam_capture.ImageCaptureCallback callback) {
         this.callback = callback;
     }
-  
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        JPanel webcamPanel = new JPanel();
+      JPanel webcamPanel = new JPanel();
                 webcamPanel.setBackground(new java.awt.Color(255, 255, 255));
                 webcamPanel.setBorder(new MatteBorder(1, 1, 1, 1, new java.awt.Color(0, 0, 0))); 
                 webcamPanel.setVisible(true);
@@ -191,39 +164,66 @@ public class webcam_capture extends javax.swing.JFrame {
                     timer.start();
      
     }   
-    }//GEN-LAST:event_jButton1ActionPerformed
-    public BufferedImage getCapturedImage() {
-        return bufferedImage;
-    }
-   
-    public static double compareFaces(Mat image1, Mat image2) {
-    Mat grayImage1 = new Mat();
-    Mat grayImage2 = new Mat();
-
-    // Convert images to grayscale
-    Imgproc.cvtColor(image1, grayImage1, Imgproc.COLOR_BGR2GRAY);
-    Imgproc.cvtColor(image2, grayImage2, Imgproc.COLOR_BGR2GRAY);
-
-    // Resize both images to a fixed size to ensure compatibility for comparison
-    Size size = new Size(128, 128);
-    Imgproc.resize(grayImage1, grayImage1, size);
-    Imgproc.resize(grayImage2, grayImage2, size);
-
-    // Calculate the sum of absolute differences for each pixel
-    double sumDiff = 0;
-    for (int i = 0; i < grayImage1.rows(); i++) {
-        for (int j = 0; j < grayImage1.cols(); j++) {
-            sumDiff += Math.abs(grayImage1.get(i, j)[0] - grayImage2.get(i, j)[0]);
+           {
+               if(!Id1.contains("[0-9]+")){
+                   JOptionPane.showMessageDialog(null, "Please enter proper ID ");
+                     return;
+               }
+               // Fetch the image of the teacher from the database based on the teacher ID
+    byte[] imageBytes = null;
+    try {
+        // Establish a connection to the database using the Cont class
+        Connection conn = Cont.getConnection();
+        
+        // Prepare a SQL query to fetch the image data based on the teacher ID
+        String query = "SELECT FaceImage FROM teachers WHERE TeacherID = '" + Id1+ "'";
+        PreparedStatement pstmt = conn.prepareStatement(query);
+        pstmt.setString(1, Id1);
+        
+        // Execute the query
+        ResultSet rs = pstmt.executeQuery();
+        
+        // Check if the result set contains data
+        if (rs.next()) {
+            // Get the image data as a byte array
+            imageBytes = rs.getBytes("FaceImage");
+        } else {
+            JOptionPane.showMessageDialog(null, "Image not found in the database for the provided teacher ID.");
+            return;
         }
+        
+        // Convert the captured image BufferedImage to Mat
+        Mat capturedImageMat = webcam_capture.BufferedImage2Mat(capturedImage);
+
+        // Convert the retrieved image from the database to Mat
+        Mat dbImageMat = webcam_capture.ByteToMat(imageBytes);
+        
+        // Compare the faces using OpenCV
+        double similarity = webcam_capture.compareFaces(capturedImageMat, dbImageMat);
+
+        // Define a threshold for similarity
+        double threshold = 0.7; // Adjust this threshold as needed
+
+        if (similarity >= threshold) {
+            // Faces match
+            JOptionPane.showMessageDialog(null, "Face matched!");
+            this.dispose(); // Close the login window
+            homepage h1 = new homepage();
+            h1.setVisible(true);
+        } else {
+            // Faces do not match
+            JOptionPane.showMessageDialog(null, "Face not matched. Please try again.");
+        }
+        
+    } catch (Exception e) {
+        e.printStackTrace();
     }
-
-    // Normalize the difference to get similarity
-    double maxDifference = 255 * grayImage1.rows() * grayImage1.cols(); // Max difference between pixel values
-    double similarity = 1 - (sumDiff / maxDifference);
-
-    return similarity;
-}
-    public BufferedImage Mat2BufferedImage(Mat mat) {
+           }
+          this.dispose(); // but first need to add face verfication here and then decide if go further or not.
+           homepage h1 = new homepage();
+           h1.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+ public BufferedImage Mat2BufferedImage(Mat mat) {
         int type = BufferedImage.TYPE_BYTE_GRAY;
         if (mat.channels() > 1) {
             type = BufferedImage.TYPE_3BYTE_BGR;
@@ -250,27 +250,25 @@ public class webcam_capture extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(webcam_capture.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(scan_face.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(webcam_capture.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(scan_face.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(webcam_capture.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(scan_face.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(webcam_capture.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(scan_face.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
-      System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new webcam_capture().setVisible(true);
+                new scan_face().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
