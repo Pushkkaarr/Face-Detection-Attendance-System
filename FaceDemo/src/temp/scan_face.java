@@ -1,41 +1,83 @@
-
 package temp;
-
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.Timer;
-import javax.swing.border.MatteBorder;
+import java.io.ByteArrayInputStream;
+import javax.imageio.ImageIO;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
+import org.opencv.core.MatOfRect;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.videoio.VideoCapture;
 
-public class scan_face extends javax.swing.JFrame implements webcam_capture.ImageCaptureCallback {
-     BufferedImage capturedImage;
-     VideoCapture camera;
-    BufferedImage bufferedImage;
-    JLabel imgLabel;
-    public void onImageCaptured(BufferedImage image) {
-        this.capturedImage = image;
+
+public class scan_face extends javax.swing.JFrame  {
+    private DaemonThread myThread = null;
+    int count = 0;
+    VideoCapture webSource = null;
+    Mat frame = new Mat();
+    MatOfByte mem = new MatOfByte();
+    CascadeClassifier faceDetector = new CascadeClassifier("E:/Softwares/NetBeans IDE/Projects/Github/Face-Detection-Attendance-System/FaceDemo/src/temp/haarcascade_frontalface_default.xml");
+    MatOfRect faceDetections = new MatOfRect();
+   String Id1;
+    class DaemonThread implements Runnable {
+
+        protected volatile boolean runnable = false;
+
+        @Override
+        public void run() {
+            synchronized (this) {
+                while (runnable) {
+                    if (webSource.grab()) {
+                        try {
+                            webSource.setPreferredSize(new Dimension(300, 250));
+                            webSource.retrieve(frame);
+                            Graphics g = jPanel1.getGraphics();
+                            faceDetector.detectMultiScale(frame, faceDetections);
+                            for (Rect rect : faceDetections.toArray()) {
+                               // System.out.println("ttt");
+                                Imgproc.rectangle(frame, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height),
+                                        new Scalar(0, 255,0));
+                            }
+                           Imgcodecs.imencode(".bmp", frame, mem);
+                            Image im = ImageIO.read(new ByteArrayInputStream(mem.toArray()));
+                            BufferedImage buff = (BufferedImage) im;
+                            if (g.drawImage(buff, 0, 0, getWidth(), getHeight()-150 , 0, 0, buff.getWidth(), buff.getHeight(), null)) {
+                                if (runnable == false) {
+                                    System.out.println("Paused ..... ");
+                                    this.wait();
+                                }
+                            }
+                        } catch (Exception ex) {
+                            System.out.println("Error!!");
+                            ex.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
     }
     public scan_face() {
         initComponents();
+         System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // Load OpenCV library
+        this.setExtendedState(MAXIMIZED_BOTH);
+         this.setTitle("Face Recognition");
+        
+
     }
-    String Id1;
    public scan_face(String str){
        Id1=str;
+       initComponents();
+         System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // Load OpenCV library
+        this.setExtendedState(MAXIMIZED_BOTH);
+         this.setTitle("Face Recognition");
    }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -43,6 +85,7 @@ public class scan_face extends javax.swing.JFrame implements webcam_capture.Imag
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -55,10 +98,17 @@ public class scan_face extends javax.swing.JFrame implements webcam_capture.Imag
         jLabel1.setText("Scan Your Face");
         jLabel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 153), 4, true));
 
-        jButton1.setText("Start Camera");
+        jButton1.setText("Start");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Pause");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
             }
         });
 
@@ -67,23 +117,26 @@ public class scan_face extends javax.swing.JFrame implements webcam_capture.Imag
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(156, 156, 156)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(251, 251, 251)
-                        .addComponent(jButton1)))
+                .addGap(156, 156, 156)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(218, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(117, 117, 117)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(125, 125, 125))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 294, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(84, 84, 84))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 293, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addGap(85, 85, 85))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -100,142 +153,27 @@ public class scan_face extends javax.swing.JFrame implements webcam_capture.Imag
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-     private webcam_capture.ImageCaptureCallback callback;
-
-    // Method to set the callback
-    public void setImageCaptureCallback(webcam_capture.ImageCaptureCallback callback) {
-        this.callback = callback;
-    }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-      JPanel webcamPanel = new JPanel();
-                webcamPanel.setBackground(new java.awt.Color(255, 255, 255));
-                webcamPanel.setBorder(new MatteBorder(1, 1, 1, 1, new java.awt.Color(0, 0, 0))); 
-                webcamPanel.setVisible(true);
-                 imgLabel = new JLabel();
-                webcamPanel.add(imgLabel);
-                webcamPanel.setLayout(new BorderLayout());
-                webcamPanel.add(imgLabel, BorderLayout.CENTER);
-                getContentPane().add(webcamPanel, BorderLayout.CENTER);
-                webcamPanel.setBounds(200,100,300,300);           
-                setVisible(true);           
-             if (camera == null) {
-                    camera = new VideoCapture(0); // Open default camera (index 0)    
-                    
-                    JButton captureButton = new JButton("Capture Image");
-                    captureButton.addActionListener(new ActionListener() {                       
-                        public void actionPerformed(ActionEvent e) {
-                            Mat frame = new Mat();
-                          
-                            if (camera.read(frame)) {
-                                   if(!camera.isOpened()){
-                        JOptionPane.showMessageDialog(null,"Error: Camera not opened. Check if the camera is connected and accessible.");
-                        return;
-                    }
-                                Imgcodecs.imwrite("captured_image.jpg", frame);
-                                JOptionPane.showMessageDialog(null, "Image captured successfully!");
-                            BufferedImage capturedImg = Mat2BufferedImage(frame); // Convert captured Mat to BufferedImage
-                    if (callback != null) {
-                        callback.onImageCaptured(capturedImg); // Notify the callback with the captured image
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Error: Unable to capture image from webcam.");
-                }
-            }
-        });
-                    webcamPanel.add(captureButton, BorderLayout.SOUTH);
-            
-                    
-                    Timer timer = new Timer(33, new ActionListener() { // Update frame every 33 milliseconds (30 fps)
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                             bufferedImage = null;
-                            Mat frame = new Mat(); // Declare Mat frame as a class-level variable
-                            if (camera.read(frame)) {
-                                Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGR2RGB); // Convert color space for displaying in Swing
-                                  Core.flip(frame, frame, 1); // Flip along the x-axis only
-                                bufferedImage = Mat2BufferedImage(frame);
-                                imgLabel.setIcon(new ImageIcon(bufferedImage));
-                                imgLabel.repaint();
-                             
-                               
-                            }
-                        }
-                    });
-                    timer.start();
-     
-    }   
-           {
-               if(!Id1.contains("[0-9]+")){
-                   JOptionPane.showMessageDialog(null, "Please enter proper ID ");
-                     return;
-               }
-               // Fetch the image of the teacher from the database based on the teacher ID
-    byte[] imageBytes = null;
-    try {
-        // Establish a connection to the database using the Cont class
-        Connection conn = Cont.getConnection();
-        
-        // Prepare a SQL query to fetch the image data based on the teacher ID
-        String query = "SELECT FaceImage FROM teachers WHERE TeacherID = '" + Id1+ "'";
-        PreparedStatement pstmt = conn.prepareStatement(query);
-        pstmt.setString(1, Id1);
-        
-        // Execute the query
-        ResultSet rs = pstmt.executeQuery();
-        
-        // Check if the result set contains data
-        if (rs.next()) {
-            // Get the image data as a byte array
-            imageBytes = rs.getBytes("FaceImage");
-        } else {
-            JOptionPane.showMessageDialog(null, "Image not found in the database for the provided teacher ID.");
-            return;
-        }
-        
-        // Convert the captured image BufferedImage to Mat
-        Mat capturedImageMat = webcam_capture.BufferedImage2Mat(capturedImage);
+   webSource = new VideoCapture(0); // video capture from default cam
+        myThread = new DaemonThread(); //create object of threat class
+        Thread t = new Thread(myThread);
+        t.setDaemon(true);
+        myThread.runnable = true;
+        t.start();                 //start thrad
+        jButton1.setEnabled(false);  // deactivate start button
+        jButton2.setEnabled(true);  //  activate stop button
 
-        // Convert the retrieved image from the database to Mat
-        Mat dbImageMat = webcam_capture.ByteToMat(imageBytes);
-        
-        // Compare the faces using OpenCV
-        double similarity = webcam_capture.compareFaces(capturedImageMat, dbImageMat);
-
-        // Define a threshold for similarity
-        double threshold = 0.7; // Adjust this threshold as needed
-
-        if (similarity >= threshold) {
-            // Faces match
-            JOptionPane.showMessageDialog(null, "Face matched!");
-            this.dispose(); // Close the login window
-            homepage h1 = new homepage();
-            h1.setVisible(true);
-        } else {
-            // Faces do not match
-            JOptionPane.showMessageDialog(null, "Face not matched. Please try again.");
-        }
-        
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-           }
-          this.dispose(); // but first need to add face verfication here and then decide if go further or not.
-           homepage h1 = new homepage();
-           h1.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
- public BufferedImage Mat2BufferedImage(Mat mat) {
-        int type = BufferedImage.TYPE_BYTE_GRAY;
-        if (mat.channels() > 1) {
-            type = BufferedImage.TYPE_3BYTE_BGR;
-        }
-        int bufferSize = mat.channels() * mat.cols() * mat.rows();
-        byte[] b = new byte[bufferSize];
-        mat.get(0, 0, b);
-        BufferedImage image = new BufferedImage(mat.cols(), mat.rows(), type);
-        final byte[] targetPixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
-        System.arraycopy(b, 0, targetPixels, 0, b.length);
-        return image;
-    }
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+   myThread.runnable = false;            // stop thread
+        jButton2.setEnabled(false);   // activate start button 
+        jButton1.setEnabled(true);     // deactivate stop button
+
+        webSource.release();  // stop caturing fron cam
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+ 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -259,17 +197,19 @@ public class scan_face extends javax.swing.JFrame implements webcam_capture.Imag
             java.util.logging.Logger.getLogger(scan_face.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new scan_face().setVisible(true);
+                new scan_face("").setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
+
 }

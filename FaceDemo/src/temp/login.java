@@ -1,11 +1,9 @@
 package temp;
 
-import java.awt.image.BufferedImage;
 import org.opencv.core.Core;
 
 public class login extends javax.swing.JFrame {
     public login() {
-        this.str = jTextField1.getText();
         initComponents();
        this.setExtendedState(MAXIMIZED_BOTH);
     }
@@ -148,7 +146,8 @@ public class login extends javax.swing.JFrame {
     String str;
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-           scan_face s = new scan_face(str);
+           this.str = jTextField1.getText();
+        scan_face s = new scan_face(str);
            s.setVisible(true);
        
     }//GEN-LAST:event_jButton1ActionPerformed
