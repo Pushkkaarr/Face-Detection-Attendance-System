@@ -15,7 +15,7 @@ public class register extends javax.swing.JFrame {
          System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // Load OpenCV library
         this.setExtendedState(MAXIMIZED_BOTH);
          this.setTitle("Face Recognition");
-        
+        this.setTitle("Registration Page");
 
     }
     

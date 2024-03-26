@@ -37,7 +37,7 @@ public class scan_face extends javax.swing.JFrame  {
                 while (runnable) {
                     if (webSource.grab()) {
                         try {
-                            webSource.setPreferredSize(new Dimension(300, 250));
+                            //webSource.setPreferredSize(new Dimension(300, 250));
                             webSource.retrieve(frame);
                             Graphics g = jPanel1.getGraphics();
                             faceDetector.detectMultiScale(frame, faceDetections);
@@ -67,17 +67,18 @@ public class scan_face extends javax.swing.JFrame  {
     public scan_face() {
         initComponents();
          System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // Load OpenCV library
-        this.setExtendedState(MAXIMIZED_BOTH);
+       // this.setExtendedState(MAXIMIZED_BOTH);
          this.setTitle("Face Recognition");
-        
+         this.setBounds(200,100,300,300);
 
     }
    public scan_face(String str){
        Id1=str;
        initComponents();
          System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // Load OpenCV library
-        this.setExtendedState(MAXIMIZED_BOTH);
-         this.setTitle("Face Recognition");
+        //this.setExtendedState(MAXIMIZED_BOTH);
+         this.setTitle("Scannig User Face");
+         this.setBounds(200,100,300,300);
    }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -105,7 +106,7 @@ public class scan_face extends javax.swing.JFrame  {
             }
         });
 
-        jButton2.setText("Pause");
+        jButton2.setText("Close");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -171,6 +172,8 @@ public class scan_face extends javax.swing.JFrame  {
         jButton1.setEnabled(true);     // deactivate stop button
 
         webSource.release();  // stop caturing fron cam
+        this.dispose();
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
  

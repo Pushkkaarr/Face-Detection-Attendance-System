@@ -6,6 +6,7 @@ public class login extends javax.swing.JFrame {
     public login() {
         initComponents();
        this.setExtendedState(MAXIMIZED_BOTH);
+       this.setTitle("Login Page");
     }
    
     @SuppressWarnings("unchecked")
