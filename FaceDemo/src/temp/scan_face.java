@@ -22,6 +22,9 @@ import org.opencv.videoio.VideoCapture;
 
 public class scan_face extends javax.swing.JFrame  {
      String Id1;
+     Mat storedFace;
+     byte[] databaseFaceData;
+     
        public scan_face() {
         initComponents();
          System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // Load OpenCV library
@@ -40,7 +43,6 @@ public class scan_face extends javax.swing.JFrame  {
     
     private DaemonThread myThread = null;
     VideoCapture webSource = null;
-    Mat frame = new Mat();
     MatOfByte mem = new MatOfByte();
     CascadeClassifier faceDetector = new CascadeClassifier("E:/Softwares/NetBeans IDE/Projects/Github/Face-Detection-Attendance-System/FaceDemo/src/temp/haarcascade_frontalface_default.xml");
     MatOfRect faceDetections = new MatOfRect();
@@ -53,11 +55,13 @@ class DaemonThread implements Runnable {
     private Mat storedFace;
     private byte[] databaseFaceData;
     private JPanel jPanel;
+    private BufferedImage image;
 
     DaemonThread(Mat storedFace, byte[] databaseFaceData, JPanel jPanel) {
         this.storedFace = storedFace;
         this.databaseFaceData = databaseFaceData;
         this.jPanel = jPanel;
+        this.image = null;
     }
 
     @Override
@@ -66,8 +70,9 @@ class DaemonThread implements Runnable {
             while (runnable) {
                 if (webSource.grab()) {
                     try {
+                        Mat frame = new Mat();
                         webSource.retrieve(frame);
-
+                
                         // Detect faces
                         faceDetector.detectMultiScale(frame, faceDetections);
 
@@ -78,15 +83,15 @@ class DaemonThread implements Runnable {
                         }
 
                         // Display the frame
+                        Imgcodecs.imencode(".bmp", frame, mem);
                         Image im = ImageIO.read(new ByteArrayInputStream(mem.toArray()));
                         BufferedImage buff = (BufferedImage) im;
                         Graphics g = jPanel.getGraphics();
-                        g.drawImage(buff, 0, 0, jPanel.getWidth(), jPanel.getHeight(), 0, 0, buff.getWidth(), buff.getHeight(), null);
-
-                        if (runnable == false) {
-                            System.out.println("Paused ..... ");
-                            this.wait();
-                        }
+                       if (g.drawImage(buff, 0, 0, getWidth(), getHeight()-150 , 0, 0, buff.getWidth(), buff.getHeight(), null)) {
+                                if (runnable == false) {
+                                    System.out.println("Paused ..... ");
+                                    this.wait();                                }
+                            }
                     } catch (Exception ex) {
                         System.out.println("Error!!");
                         ex.printStackTrace();
@@ -198,34 +203,15 @@ Imgproc.cvtColor(img1, img1Gray, Imgproc.COLOR_BGR2GRAY);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       SwingUtilities.invokeLater(new Runnable() {
-        @Override
-        public void run() {
-            webSource = new VideoCapture(0); // video capture from default cam
-            byte[] databaseFaceData = Cont.getFaceImageFromDatabase(Id1);
-            Mat storedFace = new Mat(1, databaseFaceData.length, CvType.CV_8U);
-            storedFace.put(0, 0, databaseFaceData);
+        webSource = new VideoCapture(0); // video capture from default cam
+        myThread = new DaemonThread(storedFace, databaseFaceData, jPanel1);
+        Thread t = new Thread(myThread);
+        t.setDaemon(true);
+        myThread.runnable = true;
+        t.start();                 //start thrad
+        jButton1.setEnabled(false);  // deactivate start button
+        jButton2.setEnabled(true);  //  activate stop button
 
-            myThread = new DaemonThread(storedFace, databaseFaceData, jPanel1);
-
-            Thread t = new Thread(myThread);
-
-            if (databaseFaceData != null && databaseFaceData.length > 0) {
-                var databaseFace = new Mat(1, databaseFaceData.length, CvType.CV_8U);
-                databaseFace.put(0, 0, databaseFaceData);
-
-                myThread = new DaemonThread(storedFace, databaseFaceData, jPanel1);
-            } else {
-                System.err.println("No image data found for the specified ID.");
-            }
-
-            t.setDaemon(true);
-            myThread.runnable = true;
-            t.start(); //start thrad
-            jButton1.setEnabled(false); // deactivate start button
-            jButton2.setEnabled(true); // activate stop button
-        }
-    });
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

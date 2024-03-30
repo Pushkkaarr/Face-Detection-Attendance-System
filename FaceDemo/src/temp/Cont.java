@@ -11,39 +11,37 @@ public class Cont {
         return connection;
     }
 
-    public static Statement getStatement() throws SQLException {
+    public static Statement getStatement(Connection connection) throws SQLException {
         try {
-            statement = connection.createStatement();
+              if (connection != null) {
+        return connection.createStatement();
+    } else {
+                  
+        throw new SQLException("Connection object is null.");
+    }
+            //statement = connection.createStatement();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return statement;
     }
     
-    public static byte[] getFaceImageFromDatabase(String userId) {
-        byte[] imageData = null;
-
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/face", "root", "MePushkar@sql#193?PW")) {
-            Statement statement = connection.createStatement();
-            String query = "SELECT FaceImage FROM teacherdetails WHERE TeacherID = '" + userId + "'";
-
-            ResultSet resultSet = statement.executeQuery(query);
-
-            if (resultSet.next()) {
-                imageData = resultSet.getBytes("FaceImage");
-            }
-
-            resultSet.close();
-            statement.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
+   public static byte[] getFaceImageFromDatabase(String userId) {
+    byte[] image = null;
+    try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/face", "root", "MePushkar@sql#193?PW");
+        Statement statement = getStatement(connection);
+         ResultSet resultSet = statement.executeQuery("SELECT FaceImage FROM teacherdetails WHERE TeacherID = '" + userId + "'")) {
+        if (resultSet.next()) {
+            image = resultSet.getBytes("FaceImage");
         }
-
-        return imageData;
+        resultSet.close();
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+    return image;
+}
     public static ResultSet getResultset(String query) throws SQLException {
-        statement = getStatement();
+        statement = getStatement(connection);
         ResultSet rs = statement.executeQuery(query);
         return rs;
     }

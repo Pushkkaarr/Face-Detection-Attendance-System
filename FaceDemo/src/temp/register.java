@@ -8,6 +8,7 @@ import java.sql.*;
 import javax.imageio.ImageIO;
 import org.opencv.core.Core;
 public class register extends javax.swing.JFrame {
+    private static Connection connection;
     BufferedImage capturedImage;
     byte[] imageData;
     public register() {
@@ -368,7 +369,7 @@ public class register extends javax.swing.JFrame {
     return; // to stop user from proceeding forward
 }
     try {
-              Statement statement = Cont.getStatement();
+              Statement statement = Cont.getStatement(connection);
                  String query = "INSERT INTO teacherdetails (TeacherID, FullName, Department, Age, MobileNumber, Email, Gender,FaceImage) "
                           + "VALUES ('"+Id+"', '"+name+"', '"+department+"', '"+age+"', '"+mobileNumber+"', '"+email+"', '"+gender+"','"+image+"')";
                    statement.executeUpdate(query);

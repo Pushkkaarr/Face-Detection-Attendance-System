@@ -150,7 +150,8 @@ public class login extends javax.swing.JFrame {
            this.str = jTextField1.getText();
         scan_face s = new scan_face(str);
            s.setVisible(true);
-       
+//            homepage h1=new homepage();
+//            h1.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
    public static void main(String args[]) {
