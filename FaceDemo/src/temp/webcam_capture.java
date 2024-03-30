@@ -16,7 +16,6 @@ import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
-import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
@@ -196,33 +195,33 @@ public class webcam_capture extends javax.swing.JFrame {
         return bufferedImage;
     }
    
-    public static double compareFaces(Mat image1, Mat image2) {
-    Mat grayImage1 = new Mat();
-    Mat grayImage2 = new Mat();
-
-    // Convert images to grayscale
-    Imgproc.cvtColor(image1, grayImage1, Imgproc.COLOR_BGR2GRAY);
-    Imgproc.cvtColor(image2, grayImage2, Imgproc.COLOR_BGR2GRAY);
-
-    // Resize both images to a fixed size to ensure compatibility for comparison
-    Size size = new Size(128, 128);
-    Imgproc.resize(grayImage1, grayImage1, size);
-    Imgproc.resize(grayImage2, grayImage2, size);
-
-    // Calculate the sum of absolute differences for each pixel
-    double sumDiff = 0;
-    for (int i = 0; i < grayImage1.rows(); i++) {
-        for (int j = 0; j < grayImage1.cols(); j++) {
-            sumDiff += Math.abs(grayImage1.get(i, j)[0] - grayImage2.get(i, j)[0]);
-        }
-    }
-
-    // Normalize the difference to get similarity
-    double maxDifference = 255 * grayImage1.rows() * grayImage1.cols(); // Max difference between pixel values
-    double similarity = 1 - (sumDiff / maxDifference);
-
-    return similarity;
-}
+//    public static double compareFaces(Mat image1, Mat image2) {
+//    Mat grayImage1 = new Mat();
+//    Mat grayImage2 = new Mat();
+//
+//    // Convert images to grayscale
+//    Imgproc.cvtColor(image1, grayImage1, Imgproc.COLOR_BGR2GRAY);
+//    Imgproc.cvtColor(image2, grayImage2, Imgproc.COLOR_BGR2GRAY);
+//
+//    // Resize both images to a fixed size to ensure compatibility for comparison
+//    Size size = new Size(128, 128);
+//    Imgproc.resize(grayImage1, grayImage1, size);
+//    Imgproc.resize(grayImage2, grayImage2, size);
+//
+//    // Calculate the sum of absolute differences for each pixel
+//    double sumDiff = 0;
+//    for (int i = 0; i < grayImage1.rows(); i++) {
+//        for (int j = 0; j < grayImage1.cols(); j++) {
+//            sumDiff += Math.abs(grayImage1.get(i, j)[0] - grayImage2.get(i, j)[0]);
+//        }
+//    }
+//
+//    // Normalize the difference to get similarity
+//    double maxDifference = 255 * grayImage1.rows() * grayImage1.cols(); // Max difference between pixel values
+//    double similarity = 1 - (sumDiff / maxDifference);
+//
+//    return similarity;
+//}
     public BufferedImage Mat2BufferedImage(Mat mat) {
         int type = BufferedImage.TYPE_BYTE_GRAY;
         if (mat.channels() > 1) {

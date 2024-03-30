@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -197,40 +198,48 @@ Imgproc.cvtColor(img1, img1Gray, Imgproc.COLOR_BGR2GRAY);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        webSource = new VideoCapture(0); // video capture from default cam
-        byte[] databaseFaceData = Cont.getFaceImageFromDatabase("id");
-         Mat storedFace = new Mat(1, databaseFaceData.length, CvType.CV_8U);
-          storedFace.put(0, 0, databaseFaceData);
+       SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+            webSource = new VideoCapture(0); // video capture from default cam
+            byte[] databaseFaceData = Cont.getFaceImageFromDatabase(Id1);
+            Mat storedFace = new Mat(1, databaseFaceData.length, CvType.CV_8U);
+            storedFace.put(0, 0, databaseFaceData);
 
-        myThread = new DaemonThread(storedFace, databaseFaceData, jPanel1);
-     
-        Thread t = new Thread(myThread);
-       
+            myThread = new DaemonThread(storedFace, databaseFaceData, jPanel1);
 
-    if (databaseFaceData != null && databaseFaceData.length > 0) {
-        var databaseFace = new Mat(1, databaseFaceData.length, CvType.CV_8U);
-        databaseFace.put(0, 0, databaseFaceData);
+            Thread t = new Thread(myThread);
 
-        myThread = new DaemonThread(storedFace,databaseFaceData, jPanel1);
-    } else {
-        System.err.println("No image data found for the specified ID.");
-    }
-        t.setDaemon(true);
-        myThread.runnable = true;
-        t.start();                 //start thrad
-        jButton1.setEnabled(false);  // deactivate start button
-        jButton2.setEnabled(true);  //  activate stop button
+            if (databaseFaceData != null && databaseFaceData.length > 0) {
+                var databaseFace = new Mat(1, databaseFaceData.length, CvType.CV_8U);
+                databaseFace.put(0, 0, databaseFaceData);
 
+                myThread = new DaemonThread(storedFace, databaseFaceData, jPanel1);
+            } else {
+                System.err.println("No image data found for the specified ID.");
+            }
+
+            t.setDaemon(true);
+            myThread.runnable = true;
+            t.start(); //start thrad
+            jButton1.setEnabled(false); // deactivate start button
+            jButton2.setEnabled(true); // activate stop button
+        }
+    });
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-   myThread.runnable = false;            // stop thread
-        jButton2.setEnabled(false);   // activate start button 
-        jButton1.setEnabled(true);     // deactivate stop button
+  SwingUtilities.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+            myThread.runnable = false; // stop thread
+            jButton2.setEnabled(false); // activate start button
+            jButton1.setEnabled(true); // deactivate stop button
 
-        webSource.release();  // stop caturing fron cam
-        this.dispose();
-        
+            webSource.release(); // stop capturing from cam
+            scan_face.this.dispose();
+        }
+    });   
     }//GEN-LAST:event_jButton2ActionPerformed
 
  

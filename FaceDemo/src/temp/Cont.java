@@ -25,12 +25,12 @@ public class Cont {
 
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/face", "root", "MePushkar@sql#193?PW")) {
             Statement statement = connection.createStatement();
-            String query = "SELECT FaceImage FROM face WHERE TeacherID = '" + userId + "'";
+            String query = "SELECT FaceImage FROM teacherdetails WHERE TeacherID = '" + userId + "'";
 
             ResultSet resultSet = statement.executeQuery(query);
 
             if (resultSet.next()) {
-                imageData = resultSet.getBytes("face_image");
+                imageData = resultSet.getBytes("FaceImage");
             }
 
             resultSet.close();
