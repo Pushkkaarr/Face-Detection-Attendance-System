@@ -57,7 +57,7 @@ public class register extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Book Antiqua", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 102, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Register Your Face ID");
+        jLabel1.setText("Faculty Registration Portal");
         jLabel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 153), 3, true));
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon1/winking-face (1).png"))); // NOI18N
@@ -67,14 +67,14 @@ public class register extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(60, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(83, 83, 83))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(109, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(83, 83, 83))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -279,6 +279,7 @@ public class register extends javax.swing.JFrame {
     String gender ;
     String Id  ;
     char[] p1;
+    String pin;
    
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         if(evt.getSource()==jButton4){
@@ -290,7 +291,7 @@ public class register extends javax.swing.JFrame {
      gender = (String) jComboBox2.getSelectedItem();
      Id = (String)jTextField4.getText();
      p1=jPasswordField1.getPassword();
-       String pin = new String(p1);
+     pin = new String(p1);
     byte[] image = imageData; // This will store the image data from the OpenCV webcam
 
   // Handling any wrong input in all fields and proper syntax for every field.
@@ -324,7 +325,7 @@ public class register extends javax.swing.JFrame {
                           + "VALUES ('"+Id+"', '"+name+"', '"+department+"', '"+age+"', '"+mobileNumber+"', '"+email+"', '"+gender+"','"+pin+"')";
                    statement.executeUpdate(query);
   
-                 JOptionPane.showMessageDialog(null, "Teacher ID: "+ Id + " \nsuccessfully saved.");
+                 JOptionPane.showMessageDialog(null, "Faculty with ID: "+ Id + " \nSuccessfully saved.");
                   System.out.println("data sent");
 }
         catch(Exception e){
