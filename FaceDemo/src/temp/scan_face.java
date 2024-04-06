@@ -2,7 +2,9 @@ package temp;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -18,6 +20,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.videoio.VideoCapture;
+import java.sql.*;
 
 
 public class scan_face extends javax.swing.JFrame  {
@@ -39,6 +42,21 @@ public class scan_face extends javax.swing.JFrame  {
        
          this.setTitle("Scannig User Face");
          this.setBounds(300,200,800,600);
+         // Retrieve the face image from the database
+        try {
+            int id = Integer.parseInt(Id1);
+            storedFace = getFaceFromDatabase(id);
+            if (storedFace.empty()) {
+                throw new Exception("Failed to retrieve face from database.");
+            }
+
+            // Convert the Mat object to a byte[] array
+            MatOfByte buffer = new MatOfByte();
+            Imgcodecs.imencode(".bmp", storedFace, buffer);
+            databaseFaceData = buffer.toArray();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
    }
     
     private DaemonThread myThread = null;
@@ -47,6 +65,39 @@ public class scan_face extends javax.swing.JFrame  {
     CascadeClassifier faceDetector = new CascadeClassifier("E:/Softwares/NetBeans IDE/Projects/Github/Face-Detection-Attendance-System/FaceDemo/src/temp/haarcascade_frontalface_default.xml");
     MatOfRect faceDetections = new MatOfRect();
   
+    private Mat getFaceFromDatabase(int id) throws Exception {
+    String query = "SELECT FaceImage FROM teacherdetails WHERE TeacherID = ?";
+
+    try (Connection conn = Cont.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(query)) {
+
+        stmt.setInt(1, id);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            Blob blob = rs.getBlob("FaceImage");
+            byte[] faceData = blob.getBytes(1, (int) blob.length());
+
+            InputStream in = new ByteArrayInputStream(faceData);
+            BufferedImage img = ImageIO.read(in);
+
+            if (img == null) {
+                System.err.println("Failed to read image from database.");
+                return null;
+            }
+
+            return BufferedImage2Mat(img);
+        } else {
+            throw new SQLException("Face not found in database.");
+        }
+    }
+}
+     public static Mat BufferedImage2Mat(BufferedImage image) {
+        Mat mat = new Mat(image.getHeight(), image.getWidth(), CvType.CV_8UC1);
+        byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+        mat.put(0, 0, data);
+        return mat;
+    }
 
 
 class DaemonThread implements Runnable {
