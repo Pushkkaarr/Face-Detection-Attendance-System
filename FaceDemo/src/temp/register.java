@@ -32,8 +32,6 @@ public class register extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -47,6 +45,7 @@ public class register extends javax.swing.JFrame {
         jTextField4 = new javax.swing.JTextField();
         jButton4 = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
+        jPasswordField1 = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -101,27 +100,7 @@ public class register extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Book Antiqua", 1, 20)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 102));
-        jLabel4.setText("Attach Your Face Recognition :");
-
-        jButton1.setBackground(new java.awt.Color(204, 204, 255));
-        jButton1.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(153, 0, 153));
-        jButton1.setText(" Upload Photo ");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jButton2.setBackground(new java.awt.Color(153, 153, 255));
-        jButton2.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(153, 0, 153));
-        jButton2.setText("Open WebCam");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
+        jLabel4.setText("Enter Your Password :");
 
         jButton3.setFont(new java.awt.Font("Book Antiqua", 3, 18)); // NOI18N
         jButton3.setForeground(new java.awt.Color(153, 0, 51));
@@ -166,6 +145,8 @@ public class register extends javax.swing.JFrame {
             }
         });
 
+        jPasswordField1.setFont(new java.awt.Font("Book Antiqua", 1, 18)); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -180,10 +161,6 @@ public class register extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
-                        .addGap(31, 31, 31)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(40, 40, 40)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(14, 14, 14))
@@ -203,15 +180,17 @@ public class register extends javax.swing.JFrame {
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(22, 22, 22)
-                                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
+                                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(117, 117, 117)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(225, 225, 225)
@@ -266,9 +245,8 @@ public class register extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(31, 31, 31))
         );
 
@@ -287,32 +265,6 @@ public class register extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
       
     
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        JFileChooser choose = new JFileChooser();
-         if (choose.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-        File selectedFile = choose.getSelectedFile();
-        
-        try {
-            capturedImage = ImageIO.read(selectedFile);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            
-            if (capturedImage != null) {
-                ImageIO.write(capturedImage, "jpg", baos);
-                imageData = baos.toByteArray();
-                
-                JOptionPane.showMessageDialog(null, "Image selected and assigned successfully!");
-            } else {
-                JOptionPane.showMessageDialog(null, "Error: Selected image cannot be read.");
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error while reading the selected image.");
-        }
-    }
-
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
        this.dispose();
        login l1 = new login();
@@ -326,43 +278,23 @@ public class register extends javax.swing.JFrame {
     String email ;
     String gender ;
     String Id  ;
-    byte[] image ; 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-      
-        registerface cam = new registerface();
-        cam.setVisible(true);
-        cam.toFront();
-        capturedImage = cam.getCapturedImage();
-       
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-      try {
-        if (capturedImage != null) {
-            ImageIO.write(capturedImage, "jpg", baos);
-             imageData = baos.toByteArray();
-            
-            // Store the byte[] imageData in a class-level variable or pass it to another method for database storage
-        } else {
-            JOptionPane.showMessageDialog(null, "Error: Captured image is null. Please capture an image from the webcam.");
-        }
-    } catch (IOException ex) {
-        ex.printStackTrace();
-        JOptionPane.showMessageDialog(null, "Error while converting image to byte array.");
-    }
-    }//GEN-LAST:event_jButton2ActionPerformed
-
+    char[] p1;
+   
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         if(evt.getSource()==jButton4){
      name = jTextField1.getText();
      department = (String) jComboBox1.getSelectedItem();
-    age = String.valueOf(jSpinner1.getValue());
+     age = String.valueOf(jSpinner1.getValue());
      mobileNumber = jTextField2.getText();
      email = jTextField3.getText();
-    gender = (String) jComboBox2.getSelectedItem();
+     gender = (String) jComboBox2.getSelectedItem();
      Id = (String)jTextField4.getText();
+     p1=jPasswordField1.getPassword();
+       String pin = new String(p1);
     byte[] image = imageData; // This will store the image data from the OpenCV webcam
 
   // Handling any wrong input in all fields and proper syntax for every field.
-     if(gender.isEmpty() || Id.isEmpty() ||name.isEmpty() || department.isEmpty() || age.isEmpty() || mobileNumber.isEmpty() || email.isEmpty()){
+     if(gender.isEmpty() || Id.isEmpty() ||name.isEmpty() || department.isEmpty() || age.isEmpty() || mobileNumber.isEmpty() || email.isEmpty()|| pin.isEmpty()){
     JOptionPane.showMessageDialog(null, "Please fill in all fields.");
     return; // to stop user from procedding forward AND TAKE ONLY CHARACTERS
 }   
@@ -382,10 +314,14 @@ public class register extends javax.swing.JFrame {
     JOptionPane.showMessageDialog(null, "Please enter Proper Email ID");
     return; // to stop user from proceeding forward
 }
+        else if (pin.length() != 8) {
+    JOptionPane.showMessageDialog(null, "Please enter 8 Characters in Your Password");
+    return; // to stop user from proceeding forward
+}
     try {
               Statement statement = Cont.getStatement();
-                 String query = "INSERT INTO teacherdetails (TeacherID, FullName, Department, Age, MobileNumber, Email, Gender,FaceImage) "
-                          + "VALUES ('"+Id+"', '"+name+"', '"+department+"', '"+age+"', '"+mobileNumber+"', '"+email+"', '"+gender+"','"+image+"')";
+                 String query = "INSERT INTO teacherdetails (TeacherID, FullName, Department, Age, MobileNumber, Email, Gender,Password) "
+                          + "VALUES ('"+Id+"', '"+name+"', '"+department+"', '"+age+"', '"+mobileNumber+"', '"+email+"', '"+gender+"','"+pin+"')";
                    statement.executeUpdate(query);
   
                  JOptionPane.showMessageDialog(null, "Teacher ID: "+ Id + " \nsuccessfully saved.");
@@ -436,8 +372,6 @@ public class register extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JComboBox<String> jComboBox1;
@@ -455,6 +389,7 @@ public class register extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;

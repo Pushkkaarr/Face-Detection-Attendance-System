@@ -31,7 +31,6 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
-//import org.bytedeco.opencv.opencv_face.LBPHFaceRecognizer;
 import org.opencv.core.Size;
 import org.opencv.utils.Converters;
 import org.opencv.face.LBPHFaceRecognizer;
@@ -39,44 +38,73 @@ import org.opencv.face.LBPHFaceRecognizer;
 public class Train {
     public static void main() {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-        String trainingDir = "E:\\Softwares\\NetBeans IDE\\Projects\\Github\\Face-Detection-Attendance-System\\Fac";
 
+        // Specify the training directory where all the training images are stored
+        String trainingDir = "E:\\Softwares\\NetBeans IDE\\Projects\\Github\\Face-Detection-Attendance-System\\Faces\\";
+
+        // List to store all the face images
         List<Mat> images = new ArrayList<>();
+
+        // List to store the corresponding labels for the face images
         List<Integer> labels = new ArrayList<>();
 
+        // Get the root directory of the training images
         File root = new File(trainingDir);
+
+        // Define a filter to get only image files
         FilenameFilter imgFilter = (dir, name) -> name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png");
 
+        // Loop through each file in the directory
         for (File image : root.listFiles(imgFilter)) {
+            System.out.println(image.getAbsolutePath());
+
+            // Read the image in grayscale
             Mat img = Imgcodecs.imread(image.getAbsolutePath(), Imgcodecs.IMREAD_GRAYSCALE);
+
+            // Check if the image is empty
             if (img.empty()) {
                 System.err.println("Error reading image file: " + image.getAbsolutePath());
                 continue;
             }
+
+            // Resize the image to 101x101 pixels
             Imgproc.resize(img, img, new Size(101, 101), 0, 0, Imgproc.INTER_AREA);
+
+            // Extract the label from the filename (assuming the filename is in the format label.jpg)
             int label = Integer.parseInt(image.getName().split("\\.")[0]);
+
+            // Add the image and label to their respective lists
             images.add(img);
             labels.add(label);
         }
 
+        // Create a LBPHFaceRecognizer object
         LBPHFaceRecognizer faceRecognizer = LBPHFaceRecognizer.create();
+
+        // Convert the labels list to a Mat object
         Mat labelsMat = Converters.vector_int_to_Mat(labels);
+
+        // Train the face recognizer with the face images and labels
         faceRecognizer.train(images, labelsMat);
 
-        Imgcodecs.imwrite("classifierLBPH.yml", labelsMat);
+        // Save the trained model to a file
+        faceRecognizer.save("classifierLBPH.yml");
 
         System.out.println("Training Done!!!");
 
-        Mat face = Imgcodecs.imread("E:\\Softwares\\NetBeans IDE\\Projects\\Github\\Face-Detection-Attendance-System\\Samples\\", Imgcodecs.IMREAD_GRAYSCALE);
+        // Test the trained model with a new image
+        String imagePath = "E:\\Softwares\\NetBeans IDE\\Projects\\Github\\Face-Detection-Attendance-System\\Samples\\pushkar.jpg";
+        Mat face = Imgcodecs.imread(imagePath, Imgcodecs.IMREAD_GRAYSCALE);
         if (face.empty()) {
-            System.err.println("Error reading image file: E:/Softwares/NetBeans IDE/Projects/Github/Face-Detection-Attendance-System/osh.jpg");
+            System.err.println("Error reading image file: " + imagePath);
             return;
         }
 
-   
+        // Resize the image to 101x101 pixels
         Imgproc.resize(face, face, new Size(101, 101), 0, 0, Imgproc.INTER_AREA);
 
-        int[] label = new int[1];
+        // Predict the label of the face image
+int[] label = new int[1];
         double[] confidence = new double[1];
         faceRecognizer.predict(face, label, confidence);
 
@@ -84,6 +112,11 @@ public class Train {
 
         System.out.println("ID : " + prediction);
 
-        JOptionPane.showMessageDialog(null, "Images Are Trained!!!", "Message : " + "Message Box", JOptionPane.INFORMATION_MESSAGE);
+        // Check if the prediction is correct
+        if (prediction == 1) {
+            JOptionPane.showMessageDialog(null, "Access Granted!", "Access Status", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "Access Denied!", "Access Status", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

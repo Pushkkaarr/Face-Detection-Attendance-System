@@ -37,13 +37,15 @@ public class registerface extends javax.swing.JFrame {
     public registerface(String Id) {
         initComponents();
         this.idPerson=Id;
+         this.setTitle("Registering User Face");
+         this.setBounds(300,200,800,600);
     }
       private DaemonThread myThread = null;
     int count = 0;
     VideoCapture webSource = null;
     Mat frame = new Mat();
     MatOfByte mem = new MatOfByte();
-    CascadeClassifier faceDetector = new CascadeClassifier("E:/Softwares/NetBeans IDE/Projects/Github/Face-Detection-Attendance-System/FaceDemo/src/temp/haarcascade_frontalface_default.xml");
+    CascadeClassifier faceDetector = new CascadeClassifier("E:\\Softwares\\NetBeans IDE\\Projects\\Github\\Face-Detection-Attendance-System\\FaceDemo\\src\\temp\\haarcascade_frontalface_default.xml");
     MatOfRect faceDetections = new MatOfRect();
     BufferedImage bufferedImage;
      int numSamples = 25, sample = 1;
@@ -70,7 +72,7 @@ class DaemonThread implements Runnable {
                                 String cropped = "E:\\Softwares\\NetBeans IDE\\Projects\\Github\\Face-Detection-Attendance-System\\Faces\\" + idPerson + "." + sample + ".jpg";
                                 Imgcodecs.imwrite(cropped, image_roi);
 
-                                jLabel2.setText(String.valueOf(sample));
+                                jLabel2.setText("Samples captured :"+String.valueOf(sample));
                                 sample++;
                                 if (sample == 26) {
                                     runnable = false;
@@ -90,7 +92,7 @@ class DaemonThread implements Runnable {
                             }
                              Thread.sleep(100);
                         } catch (Exception ex) {
-                            System.out.println("Error!!");
+                            System.out.println(ex.getMessage());
                             ex.printStackTrace();
                         }
                     }
@@ -149,7 +151,7 @@ class DaemonThread implements Runnable {
                 .addGap(115, 115, 115))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(65, 65, 65))
         );
         jPanel1Layout.setVerticalGroup(
