@@ -1,5 +1,6 @@
 package temp;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -11,14 +12,13 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 public class new_student extends javax.swing.JFrame {
-    BufferedImage capturedImage;
-    private static Connection connection;
     byte[] imageData;
+    
     public new_student() {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
     }
-
+ 
   
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -110,7 +110,8 @@ public class new_student extends javax.swing.JFrame {
 
         jButton2.setFont(new java.awt.Font("Book Antiqua", 1, 18)); // NOI18N
         jButton2.setForeground(new java.awt.Color(204, 0, 51));
-        jButton2.setText("Upload File");
+        jButton2.setText("Register Face");
+        jButton2.setToolTipText("");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -125,6 +126,14 @@ public class new_student extends javax.swing.JFrame {
         jButton3.setFont(new java.awt.Font("Book Antiqua", 1, 24)); // NOI18N
         jButton3.setForeground(new java.awt.Color(204, 0, 51));
         jButton3.setText("Submit Information");
+        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton3MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton3MouseExited(evt);
+            }
+        });
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -222,27 +231,15 @@ public class new_student extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-          JFileChooser choose = new JFileChooser();
-         if (choose.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-        File selectedFile = choose.getSelectedFile();
-        
-        try {
-            capturedImage = ImageIO.read(selectedFile);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            
-            if (capturedImage != null) {
-                ImageIO.write(capturedImage, "jpg", baos);
-                imageData = baos.toByteArray();
-                
-                JOptionPane.showMessageDialog(null, "Image selected and assigned successfully!");
-            } else {
-                JOptionPane.showMessageDialog(null, "Error: Selected image cannot be read.");
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error while reading the selected image.");
+         initComponents();
+         
+        String idPerson=(String)jTextField2.getText();
+        if(!idPerson.isEmpty() || idPerson.length()!=8){
+         registerface r1=new registerface(idPerson);
+         r1.setVisible(true);}
+        else{
+                JOptionPane.showMessageDialog(null, "Please Enter Valid GR Number ");
         }
-    }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -288,6 +285,14 @@ public class new_student extends javax.swing.JFrame {
         homepage l3 = new homepage();
         l3.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseEntered
+        jButton3.setForeground(Color.GREEN);
+    }//GEN-LAST:event_jButton3MouseEntered
+
+    private void jButton3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseExited
+      jButton3.setForeground(new java.awt.Color(204, 0, 51));
+    }//GEN-LAST:event_jButton3MouseExited
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

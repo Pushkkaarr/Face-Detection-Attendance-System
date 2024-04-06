@@ -31,92 +31,65 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import org.opencv.core.MatOfInt;
 import org.opencv.core.Size;
+import org.opencv.face.Face;
+import org.opencv.face.FaceRecognizer;
 import org.opencv.utils.Converters;
 import org.opencv.face.LBPHFaceRecognizer;
 
 public class Train {
+
+    // Define the main method
     public static void main() {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
-        // Specify the training directory where all the training images are stored
-        String trainingDir = "E:\\Softwares\\NetBeans IDE\\Projects\\Github\\Face-Detection-Attendance-System\\Faces\\";
+        // Set the path to the directory containing the images
+        String directory = "E:\\Softwares\\NetBeans IDE\\Projects\\Github\\Face-Detection-Attendance-System\\Faces\\";
 
-        // List to store all the face images
+        // Create lists to store the images and labels
         List<Mat> images = new ArrayList<>();
-
-        // List to store the corresponding labels for the face images
         List<Integer> labels = new ArrayList<>();
 
-        // Get the root directory of the training images
-        File root = new File(trainingDir);
+        // Get the directory object for the specified path
+        File dir = new File(directory);
 
-        // Define a filter to get only image files
-        FilenameFilter imgFilter = (dir, name) -> name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".png");
+        // Get the list of files in the directory
+        File[] files = dir.listFiles();
 
-        // Loop through each file in the directory
-        for (File image : root.listFiles(imgFilter)) {
-            System.out.println(image.getAbsolutePath());
+        // Initialize the label variable
+        int label = 0;
 
-            // Read the image in grayscale
-            Mat img = Imgcodecs.imread(image.getAbsolutePath(), Imgcodecs.IMREAD_GRAYSCALE);
+        // Iterate through the list of files
+        for (File file : files) {
 
-            // Check if the image is empty
-            if (img.empty()) {
-                System.err.println("Error reading image file: " + image.getAbsolutePath());
-                continue;
+            // Check if the file is a regular file and has a .jpg or .png extension
+            if (file.isFile() && (file.getName().endsWith(".jpg") || file.getName().endsWith(".png"))) {
+
+                // Read the image file in grayscale mode
+                Mat image = Imgcodecs.imread(file.getAbsolutePath(), Imgcodecs.IMREAD_GRAYSCALE);
+
+                // Add the image to the list of images
+                images.add(image);
+
+                // Add the label to the list of labels
+                labels.add(label);
             }
-
-            // Resize the image to 101x101 pixels
-            Imgproc.resize(img, img, new Size(101, 101), 0, 0, Imgproc.INTER_AREA);
-
-            // Extract the label from the filename (assuming the filename is in the format label.jpg)
-            int label = Integer.parseInt(image.getName().split("\\.")[0]);
-
-            // Add the image and label to their respective lists
-            images.add(img);
-            labels.add(label);
         }
 
-        // Create a LBPHFaceRecognizer object
-        LBPHFaceRecognizer faceRecognizer = LBPHFaceRecognizer.create();
+        // Convert the list of labels to a MatOfInt object
+        MatOfInt labelsMat = new MatOfInt();
+        labelsMat.fromList(labels);
 
-        // Convert the labels list to a Mat object
-        Mat labelsMat = Converters.vector_int_to_Mat(labels);
+        // Create an instance of LBPHFaceRecognizer
+        FaceRecognizer recognizer = LBPHFaceRecognizer.create();
 
-        // Train the face recognizer with the face images and labels
-        faceRecognizer.train(images, labelsMat);
+        // Train the recognizer with the images and labels
+        recognizer.train(images, labelsMat);
 
-        // Save the trained model to a file
-        faceRecognizer.save("classifierLBPH.yml");
+        // Save the trained model to a YAML file
+        recognizer.save("trained_model.yml");
 
-        System.out.println("Training Done!!!");
-
-        // Test the trained model with a new image
-        String imagePath = "E:\\Softwares\\NetBeans IDE\\Projects\\Github\\Face-Detection-Attendance-System\\Samples\\pushkar.jpg";
-        Mat face = Imgcodecs.imread(imagePath, Imgcodecs.IMREAD_GRAYSCALE);
-        if (face.empty()) {
-            System.err.println("Error reading image file: " + imagePath);
-            return;
-        }
-
-        // Resize the image to 101x101 pixels
-        Imgproc.resize(face, face, new Size(101, 101), 0, 0, Imgproc.INTER_AREA);
-
-        // Predict the label of the face image
-int[] label = new int[1];
-        double[] confidence = new double[1];
-        faceRecognizer.predict(face, label, confidence);
-
-        int prediction = label[0];
-
-        System.out.println("ID : " + prediction);
-
-        // Check if the prediction is correct
-        if (prediction == 1) {
-            JOptionPane.showMessageDialog(null, "Access Granted!", "Access Status", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(null, "Access Denied!", "Access Status", JOptionPane.ERROR_MESSAGE);
-        }
+        // Print a message indicating that the training and saving were successful
+        System.out.println("Training completed and model saved successfully!");
     }
 }
