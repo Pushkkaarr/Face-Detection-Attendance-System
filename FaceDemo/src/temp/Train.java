@@ -37,12 +37,15 @@ import org.opencv.face.Face;
 import org.opencv.face.FaceRecognizer;
 import org.opencv.utils.Converters;
 import org.opencv.face.LBPHFaceRecognizer;
+import org.opencv.face.Face;
 
 public class Train {
 
     // Define the main method
     public static void main() {
-
+         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+         System.loadLibrary("E:\\Softwares\\OpenCv 4.9.0(Face)\\java\\x64\\opencv_java490.dll");
+         //System.loadLibrary(org.opencv.face.Face.class.getName());
         // Set the path to the directory containing the images
         String directory = "E:\\Softwares\\NetBeans IDE\\Projects\\Github\\Face-Detection-Attendance-System\\Faces\\";
 
@@ -81,13 +84,14 @@ public class Train {
         labelsMat.fromList(labels);
 
         // Create an instance of LBPHFaceRecognizer
-        FaceRecognizer recognizer = LBPHFaceRecognizer.create();
+          org.opencv.face.FaceRecognizer faceRecognizer = null;
+        faceRecognizer = LBPHFaceRecognizer.create();
 
         // Train the recognizer with the images and labels
-        recognizer.train(images, labelsMat);
+        faceRecognizer.train(images, labelsMat);
 
         // Save the trained model to a YAML file
-        recognizer.save("trained_model.yml");
+        faceRecognizer.save("trained_model.yml");
 
         // Print a message indicating that the training and saving were successful
         System.out.println("Training completed and model saved successfully!");

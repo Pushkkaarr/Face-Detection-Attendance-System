@@ -35,7 +35,7 @@ import static org.opencv.imgproc.Imgproc.resize;
 
 // dont remove any import - even if it shows unused import.
 public class registerface extends javax.swing.JFrame {
-
+  
     public registerface() {
         initComponents();
     }
@@ -55,13 +55,17 @@ public class registerface extends javax.swing.JFrame {
     MatOfRect faceDetections = new MatOfRect();
     BufferedImage bufferedImage;
      int numSamples = 25, sample = 1;
+     public static void generate() {
+       Train.main();
+    }
 class DaemonThread implements Runnable {
-
         Rect face;
         protected volatile boolean runnable = false;
 
         @Override
         public void run() {
+            System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+            System.loadLibrary("E:\\Softwares\\OpenCv 4.9.0(Face)\\java\\x64\\opencv_java490.dll");
             synchronized (this) {
                 while (runnable) {
                     if (webSource.grab()) {
@@ -80,10 +84,10 @@ class DaemonThread implements Runnable {
 
                                 jLabel2.setText("Samples captured :"+String.valueOf(sample));
                                 sample++;
-                                if (sample == 26) {
+                                if (sample == 25) {
                                     runnable = false;
                                     webSource.release();
-                                    //insertDatabase();
+                                 
                                     generate();
                                 }
                             }
@@ -220,10 +224,7 @@ public BufferedImage getCapturedImage() {
         }
     });   
     }//GEN-LAST:event_jButton2ActionPerformed
-public void generate() {
-       Train t1 = new Train();
-       t1.main();
-    }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

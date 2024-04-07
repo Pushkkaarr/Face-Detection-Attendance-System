@@ -90,6 +90,8 @@ public class register extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(0, 0, 102));
         jLabel2.setText("Enter Your Name :");
 
+        jTextField1.setFont(new java.awt.Font("Century Gothic", 3, 18)); // NOI18N
+
         jLabel3.setFont(new java.awt.Font("Book Antiqua", 1, 20)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 102));
         jLabel3.setText("Select Your Department :");
@@ -127,13 +129,15 @@ public class register extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(0, 0, 102));
         jLabel8.setText("Enter Your Mobile no. :");
 
-        jLabel9.setFont(new java.awt.Font("Book Antiqua", 1, 20)); // NOI18N
+        jLabel9.setFont(new java.awt.Font("Century Gothic", 1, 20)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(0, 0, 102));
         jLabel9.setText("Enter Your Email ID :");
 
         jLabel10.setFont(new java.awt.Font("Book Antiqua", 1, 20)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(0, 0, 102));
         jLabel10.setText("Select Your Gender :");
+
+        jTextField2.setFont(new java.awt.Font("Century Gothic", 3, 18)); // NOI18N
 
         jSpinner1.setModel(new javax.swing.SpinnerNumberModel(21, 21, 90, 1));
 
@@ -142,6 +146,8 @@ public class register extends javax.swing.JFrame {
         jLabel11.setFont(new java.awt.Font("Book Antiqua", 1, 20)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(0, 0, 102));
         jLabel11.setText("Enter Your Teacher ID : ");
+
+        jTextField4.setFont(new java.awt.Font("Century Gothic", 3, 18)); // NOI18N
 
         jButton4.setBackground(new java.awt.Color(255, 153, 0));
         jButton4.setFont(new java.awt.Font("Book Antiqua", 1, 18)); // NOI18N

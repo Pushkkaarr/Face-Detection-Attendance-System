@@ -96,6 +96,8 @@ public class new_student extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Book Antiqua", 2, 28)); // NOI18N
         jLabel5.setText("Select Student Department :");
 
+        jTextField1.setFont(new java.awt.Font("Book Antiqua", 1, 18)); // NOI18N
+
         jSpinner1.setModel(new javax.swing.SpinnerNumberModel(1, 1, 70, 1));
 
         jSpinner2.setModel(new javax.swing.SpinnerNumberModel(18, 18, 30, 1));
@@ -104,6 +106,8 @@ public class new_student extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Book Antiqua", 2, 28)); // NOI18N
         jLabel6.setText("Enter Student G.R Number :");
+
+        jTextField2.setFont(new java.awt.Font("Book Antiqua", 1, 18)); // NOI18N
 
         jLabel7.setFont(new java.awt.Font("Book Antiqua", 2, 24)); // NOI18N
         jLabel7.setText("Enter Student Face ID : ");

@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 import org.opencv.core.Core;
 
 public class login extends javax.swing.JFrame {
+    
     public login() {
         initComponents();
        this.setExtendedState(MAXIMIZED_BOTH);
@@ -46,7 +47,7 @@ public class login extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
         jLabel2.setText("Enter Your ID  :");
 
-        jTextField1.setFont(new java.awt.Font("Book Antiqua", 0, 18)); // NOI18N
+        jTextField1.setFont(new java.awt.Font("Century Gothic", 3, 18)); // NOI18N
         jTextField1.setToolTipText("");
 
         jButton1.setBackground(new java.awt.Color(0, 102, 204));
@@ -239,7 +240,7 @@ public class login extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2MouseExited
 
    public static void main(String args[]) {
-         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+      
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new login().setVisible(true);
