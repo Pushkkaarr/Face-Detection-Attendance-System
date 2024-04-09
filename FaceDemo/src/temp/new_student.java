@@ -10,6 +10,7 @@ import java.sql.Statement;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import org.opencv.core.Core;
 
 public class new_student extends javax.swing.JFrame {
     byte[] imageData;
@@ -235,7 +236,7 @@ public class new_student extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-         initComponents();
+   System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
          
         String idPerson=(String)jTextField2.getText();
         if(!idPerson.isEmpty() || idPerson.length()!=8){
@@ -322,7 +323,7 @@ public class new_student extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-     
+     System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new new_student().setVisible(true);

@@ -1,99 +1,77 @@
 package temp;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import javax.imageio.ImageIO;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfByte;
-import org.opencv.core.MatOfRect;
-import org.opencv.core.Point;
-import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
-import org.opencv.core.Scalar;
-import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.imgproc.Imgproc;
-import org.opencv.objdetect.CascadeClassifier;
-import org.opencv.videoio.VideoCapture;
-import static org.opencv.core.Core.minMaxLoc;
-import static org.opencv.core.Core.norm;
-import static org.opencv.core.CvType.CV_32F;
-import static org.opencv.core.CvType.CV_64F;
-import static org.opencv.imgcodecs.Imgcodecs.imwrite;
-import static org.opencv.imgproc.Imgproc.cvtColor;
 import static org.opencv.imgproc.Imgproc.resize;
+import org.opencv.core.Size;
+import org.opencv.face.FaceRecognizer;
+import org.opencv.face.LBPHFaceRecognizer;
+import org.bytedeco.javacpp.DoublePointer;
+//import org.opencv.core.MatVector;
+import org.opencv.core.Core;
+import static org.opencv.core.CvType.CV_32SC1;
+import org.opencv.imgcodecs.Imgcodecs;
+import static org.opencv.imgcodecs.Imgcodecs.imread;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
-import org.opencv.core.MatOfInt;
-import org.opencv.core.Size;
-import org.opencv.face.Face;
-import org.opencv.face.FaceRecognizer;
-import org.opencv.utils.Converters;
-import org.opencv.face.LBPHFaceRecognizer;
-import org.opencv.face.Face;
+import javax.swing.SwingUtilities;
+import org.bytedeco.javacpp.IntPointer;
 
 public class Train {
 
     // Define the main method
-    public static void main() {
+    public static void main(String [] args) {
+        // Run the Swing application on the Event Dispatch Thread
+    SwingUtilities.invokeLater(() -> {
+        Train train = new Train();
+       // train.setVisible(true);
+    });
          System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-         System.loadLibrary("E:\\Softwares\\OpenCv 4.9.0(Face)\\java\\x64\\opencv_java490.dll");
-         //System.loadLibrary(org.opencv.face.Face.class.getName());
-        // Set the path to the directory containing the images
-        String directory = "E:\\Softwares\\NetBeans IDE\\Projects\\Github\\Face-Detection-Attendance-System\\Faces\\";
-
-        // Create lists to store the images and labels
-        List<Mat> images = new ArrayList<>();
-        List<Integer> labels = new ArrayList<>();
-
-        // Get the directory object for the specified path
-        File dir = new File(directory);
-
-        // Get the list of files in the directory
-        File[] files = dir.listFiles();
-
-        // Initialize the label variable
-        int label = 0;
+         
+        String trainingDir = "E:\\Softwares\\NetBeans IDE\\Projects\\Github\\Face-Detection-Attendance-System\\Faces\\";
+        
+           File root = new File(trainingDir);
+        FilenameFilter imgFilter = new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                name = name.toLowerCase();
+                return name.endsWith(".jpg") || name.endsWith(".png");
+            }
+        };
+        File[] imageFiles = root.listFiles(imgFilter);
+         List<Mat> images = new ArrayList<>(imageFiles.length);
+        
+        Mat labels = new Mat(imageFiles.length, 1, CV_32SC1);
+       labels.create(imageFiles.length, 1, CV_32SC1);
+        
+        int counter = 0;
 
         // Iterate through the list of files
-        for (File file : files) {
-
-            // Check if the file is a regular file and has a .jpg or .png extension
-            if (file.isFile() && (file.getName().endsWith(".jpg") || file.getName().endsWith(".png"))) {
-
-                // Read the image file in grayscale mode
-                Mat image = Imgcodecs.imread(file.getAbsolutePath(), Imgcodecs.IMREAD_GRAYSCALE);
-
-                // Add the image to the list of images
-                images.add(image);
-
-                // Add the label to the list of labels
-                labels.add(label);
-            }
+       for(File image : imageFiles){
+              Mat img = imread(image.getAbsolutePath(), Imgcodecs.IMREAD_GRAYSCALE);
+              resize(img, img, new Size(101, 101));
+             int label = Integer.parseInt(image.getName().split("_")[1].split("\\.")[0]);
+              images.add(img);
+              labels.put(counter, label);
+              counter++;
         }
 
-        // Convert the list of labels to a MatOfInt object
-        MatOfInt labelsMat = new MatOfInt();
-        labelsMat.fromList(labels);
-
-        // Create an instance of LBPHFaceRecognizer
-          org.opencv.face.FaceRecognizer faceRecognizer = null;
+        FaceRecognizer faceRecognizer = null;
         faceRecognizer = LBPHFaceRecognizer.create();
-
-        // Train the recognizer with the images and labels
-        faceRecognizer.train(images, labelsMat);
-
-        // Save the trained model to a YAML file
-        faceRecognizer.save("trained_model.yml");
-
-        // Print a message indicating that the training and saving were successful
-        System.out.println("Training completed and model saved successfully!");
+        faceRecognizer.train(images, labels);
+        faceRecognizer.save(trainingDir+"classifierLBPH.yml");
+        System.out.println("Training Done!!!");
+        IntPointer label = new IntPointer(1);
+        DoublePointer confidence = new DoublePointer(1);
+        Mat face = Imgcodecs.imread("E:\\Softwares\\NetBeans IDE\\Projects\\Github\\Face-Detection-Attendance-System\\Samples\\osh.jpg", Imgcodecs.IMREAD_GRAYSCALE);
+        faceRecognizer.predict(face, new int[1], new double[1]);
+        int prediction = label.get(0);
+        System.out.println("ID : " + prediction);
+        System.out.println(confidence.get(0));
+        JOptionPane.showMessageDialog(null, "Images Are Trained!!!", "Message : " + "Message Box", JOptionPane.INFORMATION_MESSAGE);
+//        new Recognizer.Recognizer().rec(prediction);
     }
+
 }
