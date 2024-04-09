@@ -53,7 +53,7 @@ public class registerface extends javax.swing.JFrame {
     MatOfByte mem = new MatOfByte();
     CascadeClassifier faceDetector = new CascadeClassifier("E:\\Softwares\\NetBeans IDE\\Projects\\Github\\Face-Detection-Attendance-System\\FaceDemo\\src\\temp\\haarcascade_frontalface_default.xml");
     MatOfRect faceDetections = new MatOfRect();
-    BufferedImage bufferedImage;
+    //BufferedImage bufferedImage;
      int numSamples = 25, sample = 1;
      public static void generate() {
        Train.main();
@@ -64,8 +64,8 @@ class DaemonThread implements Runnable {
 
         @Override
         public void run() {
-            System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-            System.loadLibrary("E:\\Softwares\\OpenCv 4.9.0(Face)\\java\\x64\\opencv_java490.dll");
+           
+            //System.loadLibrary("E:\\Softwares\\OpenCv 4.9.0(Face)\\java\\x64\\opencv_java490.dll");
             synchronized (this) {
                 while (runnable) {
                     if (webSource.grab()) {
@@ -74,7 +74,7 @@ class DaemonThread implements Runnable {
                             Graphics g = jPanel1.getGraphics();
                             faceDetector.detectMultiScale(frame, faceDetections);
                             for (Rect rect : faceDetections.toArray()) {
-                                // System.out.println("ttt");
+                           
                                 Imgproc.rectangle(frame, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height),
                                     new org.opencv.core.Scalar(0, 255,0));
                                 face = new Rect(rect.x, rect.y, rect.width, rect.height);
@@ -84,7 +84,7 @@ class DaemonThread implements Runnable {
 
                                 jLabel2.setText("Samples captured :"+String.valueOf(sample));
                                 sample++;
-                                if (sample == 25) {
+                                if (sample == 26) {
                                     runnable = false;
                                     webSource.release();
                                  
@@ -100,7 +100,7 @@ class DaemonThread implements Runnable {
                                     this.wait();
                                 }
                             }
-                             Thread.sleep(100);
+                             Thread.sleep(50);
                         } catch (Exception ex) {
                             System.out.println(ex.getMessage());
                             ex.printStackTrace();
@@ -197,9 +197,9 @@ class DaemonThread implements Runnable {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-public BufferedImage getCapturedImage() {
-        return bufferedImage;
-    }
+//public BufferedImage getCapturedImage() {
+//        return bufferedImage;
+//    }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
          webSource = new VideoCapture(0); // video capture from default cam
         myThread = new registerface.DaemonThread(); //create object of Dameonthread class
@@ -248,7 +248,7 @@ public BufferedImage getCapturedImage() {
             java.util.logging.Logger.getLogger(registerface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+ System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
    
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
