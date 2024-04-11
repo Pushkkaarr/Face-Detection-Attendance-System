@@ -240,7 +240,7 @@ public class login extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2MouseExited
 
    public static void main(String args[]) {
-      
+      System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new login().setVisible(true);

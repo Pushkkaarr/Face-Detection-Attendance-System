@@ -2,6 +2,7 @@ package temp;
 
 import java.io.File;
 import javax.swing.ImageIcon;
+import org.opencv.core.Core;
 
 public class homepage extends javax.swing.JFrame {
   ImageIcon image;
@@ -210,7 +211,7 @@ public class homepage extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(homepage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
