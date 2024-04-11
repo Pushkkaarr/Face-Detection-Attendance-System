@@ -245,7 +245,7 @@ public class new_student extends javax.swing.JFrame {
    System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
          
         String idPerson=(String)jTextField2.getText();
-        if(!idPerson.isEmpty() || idPerson.length()!=8){
+        if(!idPerson.isEmpty() || idPerson.length()!=5){
          registerface r1=new registerface(idPerson);
          r1.setVisible(true);}
         else{
@@ -272,7 +272,7 @@ public class new_student extends javax.swing.JFrame {
     JOptionPane.showMessageDialog(null, "Please enter only Characters in Name-Field ");
     return; // to stop user from proceeding forward
 }
-   else if (!GR.matches("[0-9]+") || GR.length() != 8) {
+   else if (!GR.matches("[0-9]+") || GR.length() != 5) {
     JOptionPane.showMessageDialog(null, "Please enter only integers in Teacher ID and enter exactly 5 integers.");
     return; // to stop user from proceeding forward
 }

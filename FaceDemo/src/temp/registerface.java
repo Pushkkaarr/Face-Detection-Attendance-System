@@ -107,7 +107,8 @@ public class registerface extends javax.swing.JFrame {
        for(File image : imageFiles){
               Mat img = imread(image.getAbsolutePath(), Imgcodecs.IMREAD_GRAYSCALE);
               //resize(img, img, new Size(101, 101));
-             int label = 0;
+              //String[] parts = image.getName().split("\\.");
+             int label = Integer.parseInt(image.getName().split("\\.")[0]);
               images.add(img);
               labels.put(counter, label);
               counter++;
