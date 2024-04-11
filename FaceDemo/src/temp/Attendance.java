@@ -100,7 +100,7 @@ public class Attendance extends javax.swing.JFrame {
 
         jButton2.setFont(new java.awt.Font("Book Antiqua", 1, 24)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 0, 51));
-        jButton2.setText("Mark Attendance");
+        jButton2.setText("Start Attendance");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);

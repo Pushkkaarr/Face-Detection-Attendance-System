@@ -207,7 +207,7 @@ public class login extends javax.swing.JFrame {
                 name=rs.getString("FullName");
                 JOptionPane.showMessageDialog(null, "Login successful for Faculty ID : "+fac_id+"\n\nWELCOME , "+name);
                 
-               homepage b1=new homepage();
+               homepage b1=new homepage(fac_id);
                 b1.setVisible(true);
                 this.dispose();
             } else {

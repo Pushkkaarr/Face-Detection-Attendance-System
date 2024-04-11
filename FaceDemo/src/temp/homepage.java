@@ -11,6 +11,14 @@ public class homepage extends javax.swing.JFrame {
         File imageFile = new File(getClass().getResource("/icon1/robot-face-1.png").getPath());
         image = new ImageIcon(imageFile.getAbsolutePath());
     }
+    String id;
+    public homepage(String id) {
+        initComponents();
+        this.setExtendedState(MAXIMIZED_BOTH);
+        this.id=id;
+        File imageFile = new File(getClass().getResource("/icon1/robot-face-1.png").getPath());
+        image = new ImageIcon(imageFile.getAbsolutePath());
+    }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

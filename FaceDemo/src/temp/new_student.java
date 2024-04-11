@@ -19,6 +19,12 @@ public class new_student extends javax.swing.JFrame {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
     }
+    String id;
+    public new_student(String id) {
+        initComponents();
+        this.id=id;
+        this.setExtendedState(MAXIMIZED_BOTH);
+    }
  
   
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

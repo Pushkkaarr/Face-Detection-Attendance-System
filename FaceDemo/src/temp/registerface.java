@@ -70,6 +70,7 @@ public class registerface extends javax.swing.JFrame {
     public registerface(String Id) {
         initComponents();
         this.idPerson=Id;
+        System.out.print(idPerson);
          this.setTitle("Registering User Face");
          this.setBounds(300,200,800,600);
     }
@@ -150,7 +151,7 @@ class DaemonThread implements Runnable {
                                     new org.opencv.core.Scalar(0, 255,0));
                                 face = new Rect(rect.x, rect.y, rect.width, rect.height);
                                 Mat image_roi = new Mat(frame, face);
-                                String cropped = "E:\\Softwares\\NetBeans IDE\\Projects\\Github\\Face-Detection-Attendance-System\\Faces\\" + idPerson + "\\" + sample + ".jpg";
+                                String cropped = "E:\\Softwares\\NetBeans IDE\\Projects\\Github\\Face-Detection-Attendance-System\\Faces\\" + idPerson  + sample + ".jpg";
                                 Imgcodecs.imwrite(cropped, image_roi);
 
                                 jLabel2.setText("Samples captured :"+String.valueOf(sample));
