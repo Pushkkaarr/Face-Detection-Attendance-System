@@ -6,14 +6,14 @@ import java.io.IOException;
 import javax.swing.*;
 import java.sql.*;
 import javax.imageio.ImageIO;
-import org.opencv.core.Core;
+//import org.opencv.core.Core;
 public class register extends javax.swing.JFrame {
     private static Connection connection;
     BufferedImage capturedImage;
     byte[] imageData;
     public register() {
         initComponents();
-         System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // Load OpenCV library
+         //System.loadLibrary(Core.NATIVE_LIBRARY_NAME); // Load OpenCV library
         this.setExtendedState(MAXIMIZED_BOTH);
          this.setTitle("Face Recognition");
         this.setTitle("Registration Page");
@@ -398,7 +398,7 @@ public class register extends javax.swing.JFrame {
         }
         //</editor-fold>
          // Create an instance of the register class
-     System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+    // System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new register().setVisible(true);

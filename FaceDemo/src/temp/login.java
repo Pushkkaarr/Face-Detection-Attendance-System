@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
-import org.opencv.core.Core;
+//import org.opencv.core.Core;
 
 public class login extends javax.swing.JFrame {
     
@@ -240,7 +240,7 @@ public class login extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2MouseExited
 
    public static void main(String args[]) {
-      System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+      //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new login().setVisible(true);
